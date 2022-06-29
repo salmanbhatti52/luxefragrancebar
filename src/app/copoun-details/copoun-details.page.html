@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot='start'>
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="">Coupons Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content>
+
+  <div class=""  style="    display: grid;
+  grid-template-rows: 9% 50% 9%;
+  background: white;
+  color: black;
+  border-bottom: 2px solid white;">
+   <div>
+    <p>{{api.couponCode[index].eg_title}}</p>
+   </div>
+   <div class=""  >
+    <img [src]="api.couponCode[index].eg_thumbnail" alt="" style="height: 100%;width: 100%;">
+   </div>
+   <div >
+    <p [innerHTML]="api.couponCode[index].eg_description"></p>
+   </div>
+  </div>
+  <div (click)="copy()" style="background-color: white;
+  color: black;
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+ ">
+    <p style="letter-spacing: 20px;" [innerHTML]="api.couponCode[index].eg_coupon_code"></p>
+   
+  </div>
+  
+
+</ion-content> -->
+
+
+<ion-content>
+
+  <ion-row>
+    <ion-col>
+      <ion-text style="margin-left: 10px;">{{api.couponCode[index].eg_title}}</ion-text>
+    </ion-col>
+  </ion-row>
+
+
+  <ion-row>
+    <ion-col>
+      <img [src]="api.couponCode[index].eg_thumbnail" alt="" style="  height: 220px;width: 100%;">
+    </ion-col>
+  </ion-row>
+
+  <ion-row style="border-bottom: 1px white solid;">
+    <ion-col style="text-align: left;
+    display: flex;
+    padding-left: 9px;">
+      <img src="assets/image/information.svg" alt="" style="
+      height: 46px;
+      width: 30px;">
+      <div style="display: flex;
+align-items: center;" *ngIf="!api.couponCode[index].eg_description">
+        <ion-text style="margin-left: 10px; " [innerHTML]="api.couponCode[index].eg_description"></ion-text>
+      </div>
+    </ion-col>
+
+  </ion-row>
+
+  <ion-row style="border-bottom: 1px white solid;
+  border-top: 1px white solid;
+  padding: 11px;" (click)="copy()">
+    <ion-col style="text-align: left;">
+      <div style="    display: flex;
+       justify-content: center;">
+        <img src="assets/image/copy.svg" *ngIf="!copied" alt="" style="
+         height: 21px;
+    width: 30px;
+    position: absolute;
+    left: -4px;
+    top: 3px;">
+        <img src="assets/image/copy2.svg" *ngIf="copied" alt="" style="
+     height: 21px;
+width: 30px;
+position: absolute;
+left: -4px;
+top: 3px;">
+        <ion-text style="margin-left: 10px;letter-spacing: 20px;" [innerHTML]="api.couponCode[index].eg_coupon_code">
+        </ion-text>
+      </div>
+    </ion-col>
+
+  </ion-row>
+
+
+
+
+
+</ion-content>

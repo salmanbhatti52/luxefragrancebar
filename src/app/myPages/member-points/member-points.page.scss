@@ -1,0 +1,31 @@
+.pentagon {
+  -webkit-clip-path: polygon(
+    50% 0%,
+    100% 30%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 28%
+  );
+  clip-path: polygon(50% 0%, 100% 30%, 100% 75%, 50% 100%, 0% 75%, 0% 28%);
+  background: #e342e6;
+  height: 131px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.valid-btn {
+  background: #3880ff;
+  padding: 14px 2px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.add-btn {
+  background: #cf42e6de;
+  padding: 14px 2px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

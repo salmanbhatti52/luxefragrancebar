@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-uppercase ion-text-center"
+      >{{api.pdffiles[index].title}}dsff</ion-title
+    >
+    <ion-buttons slot="end">
+      <ion-button (click)="share()">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+  <div
+    class="download ion-margin ion-padding ion-activatable"
+    style="position: relative; overflow: hidden"
+    (click)="downloadOpenPdf()"
+  >
+    <img src="../../../assets/download.svg" style="width: 24px" alt="" />
+    &nbsp;&nbsp;Download PDF File
+  </div>
+
+  <div class="ion-margin desc">
+    <div class="heading ion-padding">Description</div>
+    <div
+      class="description ion-padding"
+      [innerHTML]="api.pdffiles[index].description"
+    >
+      <!-- {{api.pdffiles[index].description}} -->
+    </div>
+  </div>
+</ion-content>

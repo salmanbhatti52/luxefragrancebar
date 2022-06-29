@@ -1,0 +1,143 @@
+ion-toolbar {
+  --border-width: 0 0 0px;
+  --background: transparent;
+  position: absolute;
+  --opacity: 0;
+}
+.logo-block {
+  height: 200px;
+  //background: var(--ion-color-success, #fff);
+  overflow: hidden;
+  ion-col {
+    text-align: center;
+    font-size: 24px;
+    color: darkblue;
+    opacity: 0.05;
+  }
+  .logo {
+    left: 0;
+    right: 0;
+    top: 65px;
+    width: 30%;
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+  }
+}
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0 0 0px;
+  --background: transparent;
+}
+.header-logo {
+  height: 150px;
+}
+.login1 {
+  margin-top: 24px;
+  ion-card {
+    box-shadow: none;
+    margin-left: 24px;
+    margin-right: 24px;
+    padding-bottom: 24px;
+  }
+  ion-button {
+    //margin: 0;
+    margin-top: 24px;
+  }
+  ion-fab-button {
+    margin: auto;
+    border-radius: 50%;
+    --box-shadow: none;
+    border: 0.02px solid #2798fb;
+    margin: auto;
+    --box-shadow: none;
+  }
+  ion-item {
+    --border-color: var(--ion-color-light, #fff);
+  }
+}
+.socila-login {
+  padding: 19px;
+  padding-top: 0;
+  ion-button {
+    margin-top: 0;
+  }
+}
+ion-segment {
+  border-radius: 0;
+  //position: fixed;
+}
+.login-register {
+  margin: 32px;
+  margin-top: 56px;
+  .login {
+    border: 0.55px solid var(--ion-color-light, #fff);
+    border-width: 0.55px 0.55px 0.55px 0.55px;
+    border-radius: 2px;
+    ion-item {
+      --border-color: var(--ion-color-light, #fff);
+    }
+  }
+}
+.loginBtn {
+  box-sizing: border-box;
+  position: relative;
+  /* width: 13em;  - apply for fixed size */
+  margin: 0.2em;
+  padding: 0 15px 0 46px;
+  border: none;
+  text-align: left;
+  line-height: 34px;
+  white-space: nowrap;
+  border-radius: 0.2em;
+  font-size: 16px;
+  color: #fff;
+}
+.loginBtn:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.loginBtn:focus {
+  outline: none;
+}
+.loginBtn:active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Facebook */
+.loginBtn--facebook {
+  background-color: #4c69ba;
+  background-image: linear-gradient(#4c69ba, #3b55a0);
+  /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+  text-shadow: 0 -1px 0 #354c8c;
+}
+.loginBtn--facebook:before {
+  border-right: #364e92 1px solid;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png")
+    6px 6px no-repeat;
+}
+.loginBtn--facebook:hover,
+.loginBtn--facebook:focus {
+  background-color: #5b7bd5;
+  background-image: linear-gradient(#5b7bd5, #4864b1);
+}
+
+/* Google */
+.loginBtn--google {
+  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+  background: #dd4b39;
+}
+.loginBtn--google:before {
+  border-right: #bb3f30 1px solid;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+    6px 6px no-repeat;
+}
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background: #e74b37;
+}

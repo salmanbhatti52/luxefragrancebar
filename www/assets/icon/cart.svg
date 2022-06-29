@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="33" height="32" viewBox="0 0 33 32">
+  <defs>
+    <filter id="cart" x="0" y="0" width="33" height="32" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#e342e6"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#cart)">
+    <path id="cart-2" data-name="cart" d="M18,21a2,2,0,1,1,2,2A2,2,0,0,1,18,21ZM7,21a2,2,0,1,1,2,2A2,2,0,0,1,7,21Zm-.3-6.415L5.029,6.239a.81.81,0,0,1-.017-.084L4.181,2H1A1,1,0,0,1,1,0H5a1,1,0,0,1,.98.8L6.82,5H23a1,1,0,0,1,.982,1.187l-1.6,8.39s0,.005,0,.007A3,3,0,0,1,19.439,17h-9.8A3,3,0,0,1,6.7,14.585Zm1.961-.391a1,1,0,0,0,1,.806h9.778a1,1,0,0,0,.98-.8L21.792,7H7.221Z" transform="translate(4.5 4.5)" fill="#e342e6"/>
+  </g>
+</svg>

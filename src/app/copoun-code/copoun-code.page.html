@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="">Coupons</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+
+  <ion-grid>
+    <ion-row
+      style="
+        border-bottom: 1px white solid;
+        background: #000000;
+        font-size: 13px;
+        margin-bottom: 4px;
+      "
+      *ngFor="let some of api.couponCode; let i = index;"
+      (click)="viewdetails(i)"
+    >
+      <ion-col style="text-align: center" size="4" size-sm>
+        <img [src]="some.eg_thumbnail" alt="" />
+      </ion-col>
+      <ion-col size="8" size-sm style="text-align: left">
+        <p>{{some.eg_title}}</p>
+        <p [innerHTML]="some.eg_description"></p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

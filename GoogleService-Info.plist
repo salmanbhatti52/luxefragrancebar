@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1071873213591-5t8pnu4ump27fl2vf0tvdk28qrksdmqo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1071873213591-5t8pnu4ump27fl2vf0tvdk28qrksdmqo</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA1AoFBA8xVGoyTCdPrb0fKQ3t4eUIfJMQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1071873213591</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>uk.co.luxefragrancebar.www.luxelife</string>
+	<key>PROJECT_ID</key>
+	<string>luxe-b8b89</string>
+	<key>STORAGE_BUCKET</key>
+	<string>luxe-b8b89.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1071873213591:ios:5f77782f9b7dcce5f215d2</string>
+</dict>
+</plist>

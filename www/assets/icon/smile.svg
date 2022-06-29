@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31.001" height="31.001" viewBox="0 0 31.001 31.001">
+  <defs>
+    <filter id="smile" x="0" y="0" width="31.001" height="31.001" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#e342e6"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#smile)">
+    <path id="smile-2" data-name="smile" d="M4.222,19.778A11,11,0,1,1,19.778,4.222,11,11,0,1,1,4.222,19.778ZM3,12a9,9,0,1,0,9-9A9.01,9.01,0,0,0,3,12Zm12-2a1,1,0,0,1,0-2h.01a1,1,0,1,1,0,2ZM9,10A1,1,0,0,1,9,8h.01a1,1,0,0,1,0,2Z" transform="translate(3.5 3.5)" fill="#e342e6"/>
+  </g>
+</svg>

@@ -1,0 +1,214 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="">Luxe Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="loadQuestions($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+  <!-- <ion-item *ngIf="!loading" style="margin-bottom: 4px" class="ion-activatable">
+    <ion-label style="padding: 12px 2px"> Show response to public </ion-label>
+    <ion-toggle
+      (ionChange)="toggle($event)"
+      checked="showAnswers=='Yes'"
+      id="themeToggle"
+      slot="end"
+    ></ion-toggle>
+  </ion-item> -->
+  <ion-item *ngIf="!loading" style="margin-bottom: 4px" class="ion-activatable">
+    <ion-label> Share </ion-label>
+    <ion-icon
+      style="color: white"
+      (click)="share()"
+      name="share-social"
+    ></ion-icon>
+  </ion-item>
+
+  <ion-grid>
+    <!-- <ion-row
+      style="
+        border-bottom: 1px white solid;
+        background: #000000;
+        font-size: 13px;
+        margin-bottom: 4px;
+      "
+      *ngFor="let some of api.couponCode; let i = index;"
+    >
+      <ion-col style="text-align: center" size="4" size-sm>
+        <img [src]="some.eg_thumbnail" alt="" />
+      </ion-col>
+      <ion-col size="8" size-sm style="text-align: left">
+        <p>{{some.eg_title}}</p>
+        <p [innerHTML]="some.eg_description"></p>
+      </ion-col>
+    </ion-row> -->
+    <ion-row
+      style="
+        border-bottom: 1px white solid;
+        background: #000000;
+        font-size: 13px;
+        margin-bottom: 4px;
+        display: grid;
+      "
+      *ngFor="let some of api.questionAnswerList; let i = index;"
+    >
+      <ion-col style="text-align: left" size="12" size-sm>
+        {{i + 1}} ). {{some.title}}
+      </ion-col>
+      <ion-col style="text-align: left" size="12" size-sm>
+        <!-- <ion-textarea
+          style="width: 100%; min-height: 100px"
+          placeholder="Enter your anwser here..."
+          [(ngModel)]="some.answer"
+        ></ion-textarea> -->
+        <ion-input
+          class="input_border"
+          required
+          type="text"
+          [(ngModel)]="some.answer"
+          placeholder="Enter your anwser here..."
+        ></ion-input>
+      </ion-col>
+      <ion-col
+        (click)="showPopup(i)"
+        style="text-align: left; display: grid"
+        size="12"
+        size-sm
+      >
+        <span
+          style="
+            font-size: 12px;
+            padding-top: 3px;
+            padding-bottom: 6px;
+            display: grid;
+            justify-content: start;
+            grid-template-columns: 7% 93%;
+          "
+        >
+          <ion-icon
+            style="background: #e342e6; padding: 3px; border-radius: 5px"
+            class="ios-contact ion-margin-end"
+            slot="start"
+            name="download"
+            mode="md"
+            slot="start"
+          ></ion-icon
+          >Attach Image
+        </span>
+        <span
+          *ngIf="some.picture_url==''  && some.picture_base_url==''"
+          style="
+            font-size: 34px;
+            background: #171616;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+          ><ion-icon
+            style="
+              font-size: 34px;
+              background: #171616;
+              height: 100px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            class="ios-contact ion-margin-end"
+            slot="start"
+            name="download"
+            mode="md"
+            slot="start"
+          ></ion-icon
+        ></span>
+
+        <img
+          style="height: 230px; width: 100%"
+          *ngIf="some.picture_url!=''"
+          [src]="some.picture_url"
+        />
+        <ion-img
+          style="height: 231px; width: 100%"
+          *ngIf="some.picture_base_url!='' && some.picture_url == ''"
+          [src]="some.picture_base_url"
+        ></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-grid *ngIf="api.questionAnswerList.length!==0">
+      <ion-row style="display: flex; justify-content: center">
+        <button
+          style="
+            background: #6f6464;
+            color: white;
+            padding: 12px 30px;
+            font-size: 19px;
+            border-radius: 9px;
+            margin-top: 21px;
+            outline: none;
+          "
+          (click)="answerQuestion()"
+        >
+          save
+        </button>
+      </ion-row>
+    </ion-grid>
+  </ion-grid>
+</ion-content>
+
+<div
+  #animate
+  [hidden]="popupHidden"
+  style="
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0 0 0 / 68%);
+    position: absolute;
+  "
+>
+  <div
+    style="
+      left: 10%;
+      position: absolute;
+      top: 40%;
+      width: 80%;
+      height: 160px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 20px;
+    "
+  >
+    <ion-row>
+      <ion-col
+        style="padding-top: 10 px; padding-right: 10px; text-align: right"
+      >
+        <img
+          style="height: 10px; width: 10px; margin-right: 4px; margin-top: 8px"
+          src="assets/img/close_black.svg"
+          (click)="hidePopup()"
+        />
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="margin-top: -4px">
+      <ion-col
+        (click)="selectImage(popupSelectedVal,'camera')"
+        style="text-align: center"
+      >
+        <img style="height: 50px; width: 50px" src="assets/img/camera.svg" />
+        <p>Camera</p>
+      </ion-col>
+      <ion-col
+        (click)="selectImage(popupSelectedVal,'gallery')"
+        style="text-align: center"
+      >
+        <img style="height: 50px; width: 50px" src="assets/img/gallery.svg" />
+        <p>Gallery</p>
+      </ion-col>
+    </ion-row>
+  </div>
+</div>

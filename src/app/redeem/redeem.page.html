@@ -1,0 +1,157 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Redeem</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="background: white">
+    <div
+      style="
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: center;
+      "
+      class="ion-padding"
+    >
+      <div style="flex-grow: 1; color: #000">1 point to validate</div>
+      <div style="position: relative">
+        <ion-select
+          *ngIf="!dropdownFlag"
+          [(ngModel)]="count"
+          style="color: black"
+          interface="popover"
+          (ionChange)="custom()"
+        >
+          <ion-select-option style="color: white" value="0">
+            Add custom no.
+          </ion-select-option>
+          <ion-select-option
+            *ngFor="let some of array"
+            value="{{some}}"
+            style="color: white"
+            >{{some}}
+          </ion-select-option>
+        </ion-select>
+
+        <ion-input
+          style="
+            color: black;
+            border: 1px solid #282222a1;
+            width: 122px;
+            margin-right: 11px;
+          "
+          (ionFocus)="showFocus()"
+          (ionBlur) = "removeFocus()"
+
+          [(ngModel)]="count"
+          *ngIf="dropdownFlag"
+          type="tel"
+          placeholder="Enter number"
+        ></ion-input>
+        <!--  <span style="background:#877777;position:absolute;top:8px;right:5px;padding:2px;border-radius:18px;width:22px;display:flex;justify-content:center">X</span> -->
+        <div
+          style="
+            background: #e342e6;
+            position: absolute;
+            top: 11px;
+            right: -14px;
+            padding: 2px;
+            border-radius: 16px;
+            width: 22px;
+            display: flex;
+            justify-content: center;
+            z-index: 99999;
+          "
+          *ngIf="dropdownFlag"
+        >
+          <ion-icon (click)="remove()" name="close-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="ion-text-center"
+      style="color: black; padding-bottom: 8px; border-bottom: 1px solid black"
+    >
+      Unlock by QR Code
+    </div>
+
+    <div class="ion-padding">
+      <ion-button
+        (click)="QRScanned()"
+        style="
+          --background: #fff;
+          color: var(--ion-color-warning);
+          border: 1px solid #6c6c6c;
+          border-radius: 4px;
+        "
+      >
+        Scan QR Code</ion-button
+      >
+    </div>
+    <div
+      class="ion-text-center"
+      style="color: black; padding-bottom: 8px; border-bottom: 1px solid black"
+    >
+      Please Enter the Password
+    </div>
+
+    <div class="ion-padding ion-text-center" style="color: black">
+      <ion-icon name="ellipse" *ngIf="code.length >= 1"></ion-icon>
+      <ion-icon name="ellipse" *ngIf="code.length >= 2"></ion-icon>
+      <ion-icon name="ellipse" *ngIf="code.length >= 3"></ion-icon>
+      <ion-icon name="ellipse" *ngIf="code.length == 4"></ion-icon>
+      <ion-icon name="ellipse-outline" *ngIf="code.length == 0"></ion-icon>
+      <ion-icon name="ellipse-outline" *ngIf="code.length < 2"></ion-icon>
+      <ion-icon name="ellipse-outline" *ngIf="code.length < 3"></ion-icon>
+      <ion-icon name="ellipse-outline" *ngIf="code.length < 4"></ion-icon>
+    </div>
+  </div>
+
+  <div
+   *ngIf="showKeyPad" 
+  class="ion-margin-vertical"
+    style="
+      display: flex;
+      flex-flow: row;
+      background-color: white;
+      flex-wrap: wrap;
+    "
+  >
+    <div
+      *ngFor="let some of nums"
+      (click)="clicked(some)"
+      style="
+        flex-shrink: 0;
+        width: calc((100% / 3));
+        border: 1px solid black;
+        height: 50px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      {{some}}
+    </div>
+    <div
+      style="
+        flex-shrink: 0;
+        width: calc((100% / 3));
+        border: 1px solid black;
+        height: 50px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <ion-icon name="arrow-back" (click)="backspace()"></ion-icon>
+    </div>
+  </div>
+</ion-content>

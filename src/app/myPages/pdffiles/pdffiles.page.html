@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot='start'>
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="">PDF Files Downloads</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+  <div class="files">
+
+    <div class="file" *ngFor='let some of api.pdffiles; let i = index;' (click)='viewdetails(i)'>
+      <div class="img">
+        <img src="../../../assets/pdf.svg" alt="">
+      </div>
+      <div class="label">
+        {{some.title}}
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>

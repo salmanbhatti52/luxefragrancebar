@@ -1,0 +1,23 @@
+.download {
+    border: 1px solid #CC9F14;
+    font-size: 20px;
+    color: #CC9F14;
+    display: flex;
+    align-items: center;
+}
+
+.desc {
+    border: 1px solid #CC9F14;
+    
+
+    .heading {
+        font-size: 20px;
+        color: #CC9F14;
+        border-bottom: 1px solid #CC9F14;
+    }
+
+    .description {
+        font-size: 14;
+        color: white;
+    }
+}
