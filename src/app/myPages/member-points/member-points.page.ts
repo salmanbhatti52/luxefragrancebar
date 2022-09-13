@@ -41,22 +41,10 @@ export class MemberPointsPage implements OnInit {
       message: "Please wait...",
     });
     loading.present();
-
-    console.log(
-      "user id is: ",
-      this.settings.customer.id,
-      btoa(this.settings.customer.id)
-    );
     this.base64_ref = btoa(this.settings.customer.id);
-    //this.isLoaded = false;
-
     this.array = [];
     this.validArray = [];
-    console.log(
-      "url is: ",
-      "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_valid_points&ref_id=" +
-        btoa(this.settings.customer.id)
-    );
+  
     this.http
       .get(
         "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_valid_points&ref_id=" +
@@ -125,8 +113,15 @@ export class MemberPointsPage implements OnInit {
     console.log("asdsadasdasdasdasdasd",this.array.length);
     this.nav.navigateForward([
       "redeem",
-      { points: this.array.length, allPoints: this.allPoints },
+      { points: this.array.length, allPoints: this.allPoints,type:'remove' },
     ]);
    
+  }
+  delete(){
+    console.log("asdsadasdasdasdasdasd",this.array.length);
+    this.nav.navigateForward([
+      "redeem",
+      { points: this.array.length, allPoints: this.allPoints,type:'remove' },
+    ]);
   }
 }

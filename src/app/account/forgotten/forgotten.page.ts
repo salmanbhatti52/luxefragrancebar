@@ -3,6 +3,7 @@ import { LoadingController, NavController, ModalController } from '@ionic/angula
 import { ApiService } from '../../api.service';
 import { Settings } from './../../data/settings';
 import { FormBuilder, FormArray, Validators } from '@angular/forms';
+import { LoginPage } from '../login/login.page';
 
 @Component({
     selector: 'app-forgotten',
@@ -46,10 +47,24 @@ export class ForgottenPage implements OnInit {
         this.disableSubmit = true;
         await this.api.postItem('reset-user-password', this.form.value).then(res => {
             this.status = res;
-            //this.navCtrl.navigateBack('/tabs/account');
+            console.log("data after forgotten",res);
+            this.login();
             this.disableSubmit = false;
         }, err => {
+            this.status = err;
             this.disableSubmit = false;
         });
     }
+    async login() {
+        const modal = await this.modalCtrl.create({
+          component: LoginPage,
+          componentProps: {
+            path: "tabs/account",
+          },
+          swipeToClose: true,
+          //presentingElement: this.routerOutlet.nativeEl,
+        });
+        modal.present();
+        const { data } = await modal.onWillDismiss();
+      }
 }

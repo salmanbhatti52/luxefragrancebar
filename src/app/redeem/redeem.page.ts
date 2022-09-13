@@ -18,7 +18,7 @@ import { QRScanner, QRScannerStatus } from "@ionic-native/qr-scanner/ngx";
 export class RedeemPage implements OnInit {
   array = [];
   nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0];
-  count = "1";
+  count: any = "1";
   allPoints: any;
   code = "";
   givenPoint: any;
@@ -53,10 +53,7 @@ export class RedeemPage implements OnInit {
     });
 
 
-     console.log("givenPoint is: ", "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
-        btoa(this.settings.customer.id) +
-        "&eg_points=" +
-        50);
+     
   }
   custom() {
     console.log("count", this.count);
@@ -67,9 +64,12 @@ export class RedeemPage implements OnInit {
     }
   }
   showFocus(){
+    console.log("showFocus---");
     this.showKeyPad = false;
   }
   removeFocus(){
+    console.log("removeFocus---");
+
     this.showKeyPad = true;
   }
   remove() {
@@ -87,73 +87,74 @@ export class RedeemPage implements OnInit {
   ngOnInit() {}
 
   async clicked(val) {
-
-    console.log("data url with pin ","https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
-           btoa(this.settings.customer.id) +
-           "&eg_points=10" +
-           "&pincode=1234"
-           );
-
     // if (Number(this.count) < this.array.length) {
     if (this.code.length < 4 && val != "") {
-
       this.code = this.code + val;
       console.log("code is: ", this.code);
 
       if (this.code.length == 4) {
-        const loading = await this.loadingCtrl.create({
-          cssClass: "my-custom-class",
-          message: "Loading...",
-        });
-        loading.present();
-          console.log("this.count", this.count);
-          if(this.allPoints){
-            this.allPoints = 0;
-          }
-          var total =  parseInt(this.count) + parseInt(this.allPoints);
-          console.log("total----",total);
-        
+        const loader = await this.loading.create({ spinner: "circles" });
+        loader.present();
+        this.count = (this.count * -1);
+        console.log("this.count negative value", this.count);
+       
+
+        if (this.count > this.givenPoint) {
+          var pointsToGive = parseInt(this.count) + 100 - this.givenPoint;
+          pointsToGive = pointsToGive + parseInt(this.allPoints);
+          console.log("here to give", pointsToGive);
+          // return;
+          this.http
+            .get(
+              "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
+                btoa(this.settings.customer.id) +
+                "&eg_points=" +
+                pointsToGive.toString()
+            )
+            .subscribe(async (resss: any) => {
+              console.log("Point are updated: ", resss);
+            });
+        }
+
         this.http
           .get(
-            "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
+            "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_validate_points&ref_id=" +
               btoa(this.settings.customer.id) +
-              "&eg_points=" +
-              total.toString()+
+              "&validate_points=" +
+              this.count.toString() +
               "&pincode=" +
               this.code
           )
-            .subscribe(async (res: any) => {
-              console.log("response for validate points is: ", res);
-              // this.dismissLoader();
-
-              if (res.message == "Invalid Pincode") {
-                const alert = await this.alert.create({
-                  header: "Invalid Pincode",
-                  message: "You entered the invalid pin code.",
-                  buttons: [
-                    {
-                      text: "OK",
-                      role: "OK",
-                    },
-                  ],
-                });
-                alert.present();
-              } else if (res.message == "All Points") {
-                const alert = await this.alert.create({
-                  header: "Points Redeemed",
-                  message: "You have successfully redeem the points.",
-                  buttons: [
-                    {
-                      text: "OK",
-                      role: "OK",
-                    },
-                  ],
-                });
-                alert.present();
-              }
-              loading.dismiss();
-              this.nav.navigateBack("member-points");
-            });
+          .subscribe(async (res: any) => {
+            console.log("response for validate points is: ", res);
+            loader.dismiss();
+            if (res.message == "Invalid Pincode") {
+              const alert = await this.alert.create({
+                header: "Invalid Pincode",
+                message: "You entered the invalid pin code.",
+                buttons: [
+                  {
+                    text: "OK",
+                    role: "OK",
+                  },
+                ],
+              });
+              alert.present();
+            } else if (res.message == "Valid points added successfully.") {
+              const alert = await this.alert.create({
+                header: "Points validated",
+                message: "You have successfully validated the points.",
+                buttons: [
+                  {
+                    text: "OK",
+                    role: "OK",
+                  },
+                ],
+              });
+              alert.present();
+            }
+            this.nav.navigateBack("member-points");
+          });
       }
     }
     // } else {
@@ -182,59 +183,70 @@ export class RedeemPage implements OnInit {
 
             console.log(textFound);
 
-             this.presentLoader();
+            this.presentLoader();
+            this.count = (this.count * -1);
             console.log("selected points", this.count);
             console.log("Available points", this.givenPoint);
-           
-        
+            if (this.count > this.givenPoint) {
+              var pointsToGive = parseInt(this.count) + 100 - this.givenPoint;
+              pointsToGive = pointsToGive + parseInt(this.allPoints);
+              console.log("here to give", pointsToGive);
+              // if(this.type=='remove'){
+              //   pointsToGive = -pointsToGive;
+              // }
               // return;
-           
-            
-            
-              console.log("this.count", this.count);
-              var total =  parseInt(this.count) + parseInt(this.allPoints);
-              console.log("total----",total);
-            
+              this.http
+                .get(
+                  "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
+                    btoa(this.settings.customer.id) +
+                    "&eg_points=" +
+                    pointsToGive.toString()
+                )
+                .subscribe(async (resss: any) => {
+                  console.log("Point are updated: ", resss);
+                });
+            }
+          
             this.http
               .get(
-                "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
+                "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_validate_points&ref_id=" +
                   btoa(this.settings.customer.id) +
-                  "&eg_points=" +
-                  total.toString()+
+                  "&validate_points=" +
+                  this.count.toString() +
                   "&pincode=" +
                   textFound
               )
-                .subscribe(async (res: any) => {
-                  console.log("response for validate points is: ", res);
-                 this.dismissLoader();
-    
-                  if (res.message == "Invalid Pincode") {
-                    const alert = await this.alert.create({
-                      header: "Invalid Pincode",
-                      message: "You entered the invalid pin code.",
-                      buttons: [
-                        {
-                          text: "OK",
-                          role: "OK",
-                        },
-                      ],
-                    });
-                    alert.present();
-                  } else if (res.message == "All Points") {
-                    const alert = await this.alert.create({
-                      header: "Points Redeemed",
-                      message: "You have successfully redeem the points.",
-                      buttons: [
-                        {
-                          text: "OK",
-                          role: "OK",
-                        },
-                      ],
-                    });
-                    alert.present();
-                  }
-                  this.nav.navigateBack("member-points");
-                });
+              .subscribe(async (res: any) => {
+                console.log("response for validate points is: ", res);
+                this.dismissLoader();
+
+                if (res.message == "Invalid Pincode") {
+                  const alert = await this.alert.create({
+                    header: "Invalid Pincode",
+                    message: "You entered the invalid pin code.",
+                    buttons: [
+                      {
+                        text: "OK",
+                        role: "OK",
+                      },
+                    ],
+                  });
+                  alert.present();
+                } else if (res.message == "Valid points added successfully.") {
+                  const alert = await this.alert.create({
+                    header: "Points validated",
+                    message: "You have successfully validated the points.",
+                    buttons: [
+                      {
+                        text: "OK",
+                        role: "OK",
+                      },
+                    ],
+                  });
+                  alert.present();
+                }
+                this.nav.navigateBack("member-points");
+              });
           },
           (err) => {
             console.log(JSON.stringify(err));

@@ -89,11 +89,12 @@ export class LoginPage implements OnInit {
   }
   async onSubmit() {
     this.disableSubmit = true;
+    this.presentLoading();
     await this.api.postItem("login", this.form.value).then(
       (res) => {
         this.status = res;
-        
-       
+        console.log("response from login api",res);
+        console.log("loading dismisssess",this.dismissLoading());
         if (this.status.errors) {
           console.log("Error is coming");
           this.loginError = true;
@@ -114,6 +115,7 @@ export class LoginPage implements OnInit {
               );
             });
           }
+      
         } else if (this.status.data) {
            localStorage.setItem("user_name", this.status.data.display_name);
           this.settings.customer.id = this.status.ID;
@@ -139,6 +141,7 @@ export class LoginPage implements OnInit {
           }
           this.close(true);
         }
+        
         this.disableSubmit = false;
       },
       (err) => {
@@ -354,6 +357,7 @@ export class LoginPage implements OnInit {
   }
   async onRegister() {
     this.disableSubmit = true;
+    this.api.presentLoading();
     await this.api.postItem("create-user", this.formRegister.value).then(
       (res) => {
         this.status = res;
@@ -377,17 +381,20 @@ export class LoginPage implements OnInit {
             });
           this.close(true);
           this.disableSubmit = false;
+          this.api.dismissLoading();
         } else this.disableSubmit = false;
       },
       (err) => {
         this.disableSubmit = false;
+        this.api.dismissLoading();
+
       }
     );
   }
   async presentLoading() {
     this.loading = await this.loadingController.create({
       message: "Please wait...",
-      duration: 2000,
+      
     });
     this.loading.present();
   }
@@ -402,7 +409,7 @@ export class LoginPage implements OnInit {
 
   registerme() {
     console.log("ref_id is: ", this.formRegister.value.ref_id);
-    if (this.formRegister.value.ref_id) {
+      this.api.presentLoading();
       this.disableSubmit = true;
       this.api
         .getPosts(
@@ -411,14 +418,16 @@ export class LoginPage implements OnInit {
         )
         .then((res) => {
           console.log("response for the ref_id points add is: ", res);
+          this.api.dismissLoading();
           this.onRegister();
         })
         .catch((res) => {
+          this.api.dismissLoading();
           this.onRegister();
         });
-    } else {
-      this.onSubmit();
-    }
+    // } else {
+    //   this.onSubmit();
+    // }
   }
   async presentToast(message) {
     const toast = await this.toastController.create({

@@ -10,7 +10,7 @@ import { catchError, tap, map } from "rxjs/operators";
 import { Config } from "./config";
 import { HTTP } from "@ionic-native/http/ngx";
 import { Headers } from "@angular/http";
-import { Platform } from "@ionic/angular";
+import { LoadingController, Platform } from "@ionic/angular";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" }),
@@ -30,11 +30,14 @@ export class ApiService {
   pointsLength :any;
   allPoints :any;
   options: any = {};
+  loading: HTMLIonLoadingElement;
   constructor(
     public platform: Platform,
     private http: HttpClient,
     private config: Config,
-    private ionicHttp: HTTP
+    private ionicHttp: HTTP,
+    public loadingController: LoadingController,
+
   ) {
     this.options.withCredentials = true;
     this.options.headers = headers;
@@ -534,6 +537,18 @@ export class ApiService {
             }
           );
       });
+    }
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: "Please wait...",
+    });
+    this.loading.present();
+  }
+  dismissLoading() {
+    if (this.loading) {
+      this.loading.dismiss();
     }
   }
 }

@@ -24,6 +24,8 @@ export class EnterPasswordPage implements OnInit {
   givenPoint: any;
   qrScan: any = "";
   dropdownFlag = false;
+  type:any;
+  showKeyPad = true;
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -43,6 +45,8 @@ export class EnterPasswordPage implements OnInit {
       console.log("givenPoint is: ", res.points);
       this.givenPoint = res.points;
       this.allPoints = res.allPoints;
+      this.type = res.type;
+      console.log('Type---',this.type);
     });
 
     this.platform.backButton.subscribeWithPriority(0, () => {
@@ -51,10 +55,7 @@ export class EnterPasswordPage implements OnInit {
     });
 
 
-     console.log("givenPoint is: ", "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_add_available_points&ref_id=" +
-        btoa(this.settings.customer.id) +
-        "&eg_points=" +
-        50);
+    
   }
   custom() {
     console.log("count", this.count);
@@ -64,9 +65,19 @@ export class EnterPasswordPage implements OnInit {
       this.dropdownFlag = true;
     }
   }
+  showFocus(){
+    console.log("showFocus---");
+    this.showKeyPad = false;
+  }
+  removeFocus(){
+    console.log("removeFocus---");
+
+    this.showKeyPad = true;
+  }
   remove() {
     console.log("sdsds");
     this.dropdownFlag = false;
+    this.showKeyPad = true;
   }
   checking() {
     console.log(this.array.length);
@@ -181,6 +192,9 @@ export class EnterPasswordPage implements OnInit {
               var pointsToGive = parseInt(this.count) + 100 - this.givenPoint;
               pointsToGive = pointsToGive + parseInt(this.allPoints);
               console.log("here to give", pointsToGive);
+              // if(this.type=='remove'){
+              //   pointsToGive = -pointsToGive;
+              // }
               // return;
               this.http
                 .get(
@@ -193,15 +207,7 @@ export class EnterPasswordPage implements OnInit {
                   console.log("Point are updated: ", resss);
                 });
             }
-            console.log(
-              "url is: ",
-              "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_validate_points&ref_id=" +
-                btoa(this.settings.customer.id) +
-                "&validate_points=" +
-                this.count.toString() +
-                "&pincode=" +
-                textFound
-            );
+          
             this.http
               .get(
                 "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_validate_points&ref_id=" +
