@@ -108,6 +108,9 @@
     },
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.www.luxelife"
+    },
+    "onesignal-cordova-plugin": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.www.luxelife"
     }
   },
   "dependent_plugins": {
