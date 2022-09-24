@@ -46,6 +46,7 @@ export class AccountPage {
     this.settings.vendor = false;
     this.settings.administrator = false;
     this.settings.wishlist = [];
+    localStorage.setItem("customerID", "");
     await this.api.postItem("logout").then(
       (res) => {},
       (err) => {

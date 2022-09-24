@@ -118,6 +118,7 @@ export class LoginPage implements OnInit {
       
         } else if (this.status.data) {
            localStorage.setItem("user_name", this.status.data.display_name);
+           localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova")) {
             this.oneSignal.getIds().then((data: any) => {
@@ -186,6 +187,7 @@ export class LoginPage implements OnInit {
               if (this.status.errors) {
                 this.errors = this.status.errors;
               } else if (this.status.data) {
+                localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
                   this.oneSignal.getIds().then((data: any) => {
@@ -245,6 +247,7 @@ export class LoginPage implements OnInit {
               if (this.status.errors) {
                 this.errors = this.status.errors;
               } else if (this.status.data) {
+                localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
                   this.oneSignal.getIds().then((data: any) => {
@@ -317,6 +320,7 @@ export class LoginPage implements OnInit {
             if (this.status.errors) {
               this.errors = this.status.errors;
             } else if (this.status.data) {
+              localStorage.setItem("customerID", this.status.ID);
               this.settings.customer.id = this.status.ID;
               if (this.platform.is("cordova")) {
                 this.oneSignal.getIds().then((data: any) => {
@@ -370,6 +374,7 @@ export class LoginPage implements OnInit {
             );
           }
         } else if (this.status.data != undefined) {
+          localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova"))
             this.oneSignal.getIds().then((data: any) => {

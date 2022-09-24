@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ViewChild } from "@angular/core";
 import { Config } from "./config";
 import { Subscription } from "rxjs";
+import { Settings } from "./data/settings";
 
 declare var wkWebView: any;
 
@@ -35,8 +36,13 @@ export class AppComponent {
     public platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private appMinimize: AppMinimize
+    private appMinimize: AppMinimize,
+    public settings: Settings
   ) {
+    console.log("on app component testing ",localStorage.getItem('customerID'));
+    if(localStorage.getItem('customerID')){
+      this.settings.customer.id = localStorage.getItem('customerID');
+    }
     this.initializeApp();
   }
 
