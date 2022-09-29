@@ -1,3 +1,4 @@
+import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api.service';
@@ -12,9 +13,11 @@ export class DeleteaccountPage implements OnInit {
   { question: 'I want to remove app from my mobile', isItemChecked: false }, { question: 'I get too many emails', isItemChecked: false }, { question: 'Other', isItemChecked: false }];
 
   selectquestions = [];
-  useremail: any;
+  useremail = '';
+  desc = '';
   constructor(public location: Location,
-    public api: ApiService) {
+    public api: ApiService,
+    public alertcontroller: AlertController) {
     this.useremail = localStorage.getItem('user_email')
   }
 
@@ -45,9 +48,29 @@ export class DeleteaccountPage implements OnInit {
     if (this.selectquestions.length == 0) {
       this.api.basicAlert('Choose one option atleast');
     } else {
-      this.api.basicAlert('Your request has been sent to admin and your account will be deleted in 24 hours')
+      this.basicAlert('Your request has been sent to admin and your account will be deleted in 24 hours')
     }
 
+  }
+  async basicAlert(message) {
+    const alert = await this.alertcontroller.create({
+      cssClass: 'basicAlert',
+      message: message,
+      // buttons: ['OK'],
+      buttons: [
+
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            this.useremail = ''
+            this.Checkboxes.forEach(node => node.isItemChecked = false);
+            this.desc = '';
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
 

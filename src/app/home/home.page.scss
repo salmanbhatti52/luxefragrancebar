@@ -521,7 +521,8 @@ ion-card-subtitle {
                 img {
                     display: block;
                     width: 100%;
-                    height: auto; //padding: 0 10px 0 10px;
+                    // height: auto; //padding: 0 10px 0 10px;
+                    height: 100px;
                 }
             }
             .row.unlimited-items {
