@@ -13,17 +13,17 @@ export class CopounCodePage implements OnInit {
     public api: ApiService,
     private nav: NavController,
     public toast: ToastController,
-    public settings :Settings
-  ) {}
+    public settings: Settings
+  ) { }
 
   ngOnInit() {
     this.loadCoupon();
   }
 
   loadCoupon() {
-    let customer =  btoa(this.settings.customer.id);
+    let customer = btoa(this.settings.customer.id);
     this.api
-      .getPosts("wp-admin/admin-ajax.php?action=eg_get_couponspromo&ref_id="+customer)
+      .getPosts("wp-admin/admin-ajax.php?action=eg_get_couponspromo&ref_id=" + customer)
       .then((res) => {
         console.log("pdf eg_get_couponspromo are: ", res);
         this.api.couponCode = res;

@@ -68,7 +68,11 @@ const routes: Routes = [
   {
     path: 'redeem',
     loadChildren: () => import('./redeem/redeem.module').then( m => m.RedeemPageModule)
+  },  {
+    path: 'deleteaccount',
+    loadChildren: () => import('./myPages/deleteaccount/deleteaccount.module').then( m => m.DeleteaccountPageModule)
   },
+
   //{ path: 'edit-address', loadChildren: './account/edit-address/edit-address.module#EditAddressPageModule' },
   //{ path: 'map', loadChildren: './account/map/map.module#MapPageModule' },
 ];

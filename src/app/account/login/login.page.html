@@ -19,13 +19,7 @@
       <img class="logo" src="assets/image/logo.png" />
     </ion-grid>
   </div>
-  <ion-segment
-    scrollable="true"
-    mode="md"
-    color="warning"
-    value="{{segment}}"
-    (ionChange)="segmentChanged($event)"
-  >
+  <ion-segment scrollable="true" mode="md" color="warning" value="{{segment}}" (ionChange)="segmentChanged($event)">
     <ion-segment-button color="warning" value="login">
       <ion-label>{{"Login"| translate}}</ion-label>
     </ion-segment-button>
@@ -41,20 +35,12 @@
           <form [formGroup]="form">
             <ion-item mode="md">
               <ion-icon slot="start" name="person" mode="md"></ion-icon>
-              <ion-input
-                type="text"
-                formControlName="username"
-                placeholder="{{'Email/Username' | translate}}"
-              >
+              <ion-input type="text" formControlName="username" placeholder="{{'Email/Username' | translate}}">
               </ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="eye" mode="md"></ion-icon>
-              <ion-input
-                type="password"
-                formControlName="password"
-                placeholder="{{'Password' | translate}}"
-              >
+              <ion-input type="password" formControlName="password" placeholder="{{'Password' | translate}}">
               </ion-input>
             </ion-item>
           </form>
@@ -72,59 +58,28 @@
               </ion-item>
              </form-->
         </ion-list>
-        <ion-button
-          fill="solid"
-          mode="md"
-          color="{{settings.theme.button}}"
-          expand="block"
-          [disabled]="disableSubmit || (!formSMS.valid && !form.valid)"
-          (click)="onSubmit()"
-          >{{"Login"| translate}}
+        <ion-button fill="solid" mode="md" color="{{settings.theme.button}}" expand="block"
+          [disabled]="disableSubmit || (!formSMS.valid && !form.valid)" (click)="onSubmit()">{{"Login"| translate}}
         </ion-button>
         <!-- <p *ngIf="loginError"  style="color:red">Username or password is wrong.</p> -->
-        <ion-button
-          style="margin-top: 0px"
-          color="dark"
-          expand="full"
-          fill="clear"
-          (click)="forgotton()"
-          >{{"Forgot Password"| translate}}?</ion-button
-        >
+        <ion-button style="margin-top: 0px" color="dark" expand="full" fill="clear" (click)="forgotton()">{{"Forgot
+          Password"| translate}}?</ion-button>
         <div class="errors" *ngIf="errors">
-          <div
-            *ngFor="let error of errors | keys"
-            style="text-align: center; padding-top: 10px"
-          >
+          <div *ngFor="let error of errors | keys" style="text-align: center; padding-top: 10px">
             <ion-label color="danger" [innerHTML]="error.value"></ion-label>
           </div>
         </div>
-        <div>
+        <div *ngIf="socialshow==true">
           <ion-row class="login-div">
             <ion-col class="col1">
-              <button
-                class="loginBtn loginBtn--facebook"
-                ion-button
-                outline
-                full
-                type="submit"
-                text-uppercase
-                [disabled]="disableSubmit"
-                (click)="facebookLogin()"
-              >
+              <button class="loginBtn loginBtn--facebook" ion-button outline full type="submit" text-uppercase
+                [disabled]="disableSubmit" (click)="facebookLogin()">
                 {{"Facebook" | translate}}
               </button>
             </ion-col>
             <ion-col class="col2">
-              <button
-                ion-button
-                outline
-                full
-                type="submit"
-                class="loginBtn loginBtn--google"
-                text-uppercase
-                [disabled]="disableSubmit"
-                (click)="googleLogin()"
-              >
+              <button ion-button outline full type="submit" class="loginBtn loginBtn--google" text-uppercase
+                [disabled]="disableSubmit" (click)="googleLogin()">
                 {{"Google" | translate}}
               </button>
             </ion-col>
@@ -137,84 +92,41 @@
           <form [formGroup]="formRegister">
             <ion-item mode="md">
               <ion-icon slot="start" name="person" mode="md"></ion-icon>
-              <ion-input
-                required
-                type="text"
-                formControlName="first_name"
-                placeholder="{{'First Name' | translate}}"
-              >
+              <ion-input required type="text" formControlName="first_name" placeholder="{{'First Name' | translate}}">
               </ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="person" mode="md"></ion-icon>
-              <ion-input
-                required
-                type="text"
-                formControlName="last_name"
-                placeholder="{{'Last Name' | translate}}"
-              >
+              <ion-input required type="text" formControlName="last_name" placeholder="{{'Last Name' | translate}}">
               </ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="call" mode="md"></ion-icon>
-              <ion-input
-                required
-                type="text"
-                formControlName="phone"
-                placeholder="{{'Phone' | translate}}"
-              ></ion-input>
+              <ion-input required type="text" formControlName="phone" placeholder="{{'Phone' | translate}}"></ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="mail" mode="md"></ion-icon>
-              <ion-input
-                required
-                type="email"
-                formControlName="email"
-                placeholder="{{'Email/Username' | translate}}"
-              >
+              <ion-input required type="email" formControlName="email" placeholder="{{'Email/Username' | translate}}">
               </ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="eye" mode="md"></ion-icon>
-              <ion-input
-                required
-                type="password"
-                formControlName="password"
-                placeholder="{{'Password' | translate}}"
-              >
+              <ion-input required type="password" formControlName="password" placeholder="{{'Password' | translate}}">
               </ion-input>
             </ion-item>
             <ion-item mode="md">
               <ion-icon slot="start" name="person" mode="md"></ion-icon>
-              <ion-input
-                type="text"
-                formControlName="ref_id"
-                placeholder="{{'Referral Code' | translate}}"
-              ></ion-input>
+              <ion-input type="text" formControlName="ref_id" placeholder="{{'Referral Code' | translate}}"></ion-input>
             </ion-item>
           </form>
-          <ion-button
-            shape="undefined"
-            mode="md"
-            color="{{settings.theme.button}}"
-            expand="block"
-            fill="solid"
-            [disabled]="disableSubmit || (!formRegister.valid)"
-            (click)="registerme()"
-            >{{"Register" | translate}}
+          <ion-button shape="undefined" mode="md" color="{{settings.theme.button}}" expand="block" fill="solid"
+            [disabled]="disableSubmit || (!formRegister.valid)" (click)="registerme()">{{"Register" | translate}}
           </ion-button>
         </ion-list>
 
         <div class="errors" *ngIf="errorsRegister">
-          <div
-            *ngFor="let error of errorsRegister | keys"
-            style="text-align: center; padding: 8px; margin-top: 16px"
-          >
-            <ion-label
-              color="danger"
-              class="error"
-              [innerHTML]="error.value"
-            ></ion-label>
+          <div *ngFor="let error of errorsRegister | keys" style="text-align: center; padding: 8px; margin-top: 16px">
+            <ion-label color="danger" class="error" [innerHTML]="error.value"></ion-label>
           </div>
         </div>
       </div>

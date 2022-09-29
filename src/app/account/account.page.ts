@@ -34,11 +34,11 @@ export class AccountPage {
     private emailComposer: EmailComposer,
     private socialSharing: SocialSharing,
     public routerOutlet: IonRouterOutlet
-  ) {}
+  ) { }
   goTo(path) {
     this.navCtrl.navigateForward(path);
   }
-  getOpinions(){
+  getOpinions() {
     this.navCtrl.navigateForward("opinions");
   }
   async log_out() {
@@ -48,7 +48,7 @@ export class AccountPage {
     this.settings.wishlist = [];
     localStorage.setItem("customerID", "");
     await this.api.postItem("logout").then(
-      (res) => {},
+      (res) => { },
       (err) => {
         console.log(err);
       }
@@ -76,8 +76,8 @@ export class AccountPage {
       var options = {
         message: this.settings.customer.id
           ? `You're in! Download The LUXE LIFE app from the \nApple App store https://apps.apple.com/pk/app/the-luxe-life/id1467552821 \nand From the Google PlayStore https://play.google.com/store/apps/details?id=uk.co.luxefragrancebar.www.luxelife \nand use code "` +
-            btoa(this.settings.customer.id.toString()) +
-            `" for your free membership.`
+          btoa(this.settings.customer.id.toString()) +
+          `" for your free membership.`
           : "",
         subject: "",
         files: ["", ""],
@@ -144,5 +144,9 @@ export class AccountPage {
 
   memberPoints() {
     this.navCtrl.navigateForward("member-points");
+  }
+
+  deleteacc() {
+    this.navCtrl.navigateForward('deleteaccount');
   }
 }

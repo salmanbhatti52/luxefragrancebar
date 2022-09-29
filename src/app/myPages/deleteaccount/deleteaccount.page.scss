@@ -1,0 +1,64 @@
+p {
+    display: block;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+
+
+.wrapper{
+ width: 90%;
+ margin: 5% auto;
+ color: #fff;
+}
+.thead{
+    font-size: 17px;
+    font-weight: 500;
+    text-align: center;
+}
+.flex-c{
+    display:flex;
+    align-items:center;
+    margin-top:6%;
+}
+.lbl{
+    margin-left:3%; 
+    font-size: 15.5px;
+}
+.check{
+    --background: #fff;
+    --background-checked: #fff;
+    --checkmark-color: #000;
+    --border-color-checked: #fff;
+    --size: 17px;
+    --border-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 0px 10px 0px;
+  }
+  .desc-area{
+    font-size: 13px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    margin-top: 3%;
+    --placeholder-color:white;
+    --placeholder-opacity:#fff;
+  }
+  .btn {
+    --background: #6f6464 0% 0% no-repeat padding-box;
+    font-size: 14pt;
+    box-shadow: 0px 4px 10px #0000001f;
+    border-radius: 10px;
+    opacity: 1;
+    width: 100%;
+    color: #ffffff;
+    margin-top: 10%;
+  }
+  .input{
+    border-bottom: 2px solid #e342e6;
+    --padding-top: 5px !important;
+    --padding-end: 0px !important;
+    --padding-bottom: 8px !important;
+    --padding-start: 7px !important;
+    font-size: 15px;
+  }

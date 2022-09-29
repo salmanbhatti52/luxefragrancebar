@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
   formRegister: any;
   formSMS: any;
   loginTab: boolean = true;
-  loginError= false;
+  loginError = false;
   path: any = "account";
   errors: any;
   errorsRegister: any;
@@ -46,6 +46,7 @@ export class LoginPage implements OnInit {
   userInfo: any;
   phoneVerificationError: any;
   loading: any;
+  socialshow = false;
   constructor(
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -78,6 +79,8 @@ export class LoginPage implements OnInit {
       phone: ["", Validators.required],
       sms: ["", Validators.required],
     });
+
+    this.sociallogin();
   }
   close(status) {
     this.modalCtrl.dismiss({
@@ -86,6 +89,22 @@ export class LoginPage implements OnInit {
   }
   ngOnInit() {
     this.path = this.navParams.data.path;
+
+  }
+  sociallogin() {
+    this.api
+      .getPosts("wp-admin/admin-ajax.php?action=eg_get_social_logins")
+      .then((res: any) => {
+        console.log("socail response ", res);
+        if (res.message == 'Active') {
+          this.socialshow = true
+        } else {
+          this.socialshow = false
+        }
+      })
+      .catch((error) => {
+        console.log("error for the pdf files is: ", error);
+      });
   }
   async onSubmit() {
     this.disableSubmit = true;
@@ -93,8 +112,8 @@ export class LoginPage implements OnInit {
     await this.api.postItem("login", this.form.value).then(
       (res) => {
         this.status = res;
-        console.log("response from login api",res);
-        console.log("loading dismisssess",this.dismissLoading());
+        console.log("response from login api", res);
+        console.log("loading dismisssess", this.dismissLoading());
         if (this.status.errors) {
           console.log("Error is coming");
           this.loginError = true;
@@ -115,10 +134,12 @@ export class LoginPage implements OnInit {
               );
             });
           }
-      
+
         } else if (this.status.data) {
-           localStorage.setItem("user_name", this.status.data.display_name);
-           localStorage.setItem("customerID", this.status.ID);
+
+          localStorage.setItem("user_email", this.status.data.user_email);
+          localStorage.setItem("user_name", this.status.data.display_name);
+          localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova")) {
             this.oneSignal.getIds().then((data: any) => {
@@ -126,7 +147,7 @@ export class LoginPage implements OnInit {
               this.form.onesignal_push_token = data.pushToken;
               this.api
                 .postItem("update_user_notification", this.form)
-                .then((res) => {});
+                .then((res) => { });
             });
           }
           if (
@@ -142,7 +163,7 @@ export class LoginPage implements OnInit {
           }
           this.close(true);
         }
-        
+
         this.disableSubmit = false;
       },
       (err) => {
@@ -196,7 +217,7 @@ export class LoginPage implements OnInit {
                   });
                   this.api
                     .postItem("update_user_notification", this.form)
-                    .then((res) => {});
+                    .then((res) => { });
                 }
                 if (
                   this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -256,7 +277,7 @@ export class LoginPage implements OnInit {
                   });
                   this.api
                     .postItem("update_user_notification", this.form)
-                    .then((res) => {});
+                    .then((res) => { });
                 }
                 if (
                   this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -329,7 +350,7 @@ export class LoginPage implements OnInit {
                 });
                 this.api
                   .postItem("update_user_notification", this.form)
-                  .then((res) => {});
+                  .then((res) => { });
               }
               if (
                 this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -374,6 +395,7 @@ export class LoginPage implements OnInit {
             );
           }
         } else if (this.status.data != undefined) {
+          localStorage.setItem("user_email", this.status.data.user_email);
           localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova"))
@@ -382,7 +404,7 @@ export class LoginPage implements OnInit {
               this.pushForm.onesignal_push_token = data.pushToken;
               this.api
                 .postItem("update_user_notification", this.pushForm)
-                .then((res) => {});
+                .then((res) => { });
             });
           this.close(true);
           this.disableSubmit = false;
@@ -399,7 +421,7 @@ export class LoginPage implements OnInit {
   async presentLoading() {
     this.loading = await this.loadingController.create({
       message: "Please wait...",
-      
+
     });
     this.loading.present();
   }
@@ -414,22 +436,22 @@ export class LoginPage implements OnInit {
 
   registerme() {
     console.log("ref_id is: ", this.formRegister.value.ref_id);
-      this.api.presentLoading();
-      this.disableSubmit = true;
-      this.api
-        .getPosts(
-          "wp-admin/admin-ajax.php?action=eg_add_points&ref_id=" +
-            this.formRegister.value.ref_id
-        )
-        .then((res) => {
-          console.log("response for the ref_id points add is: ", res);
-          this.api.dismissLoading();
-          this.onRegister();
-        })
-        .catch((res) => {
-          this.api.dismissLoading();
-          this.onRegister();
-        });
+    this.api.presentLoading();
+    this.disableSubmit = true;
+    this.api
+      .getPosts(
+        "wp-admin/admin-ajax.php?action=eg_add_points&ref_id=" +
+        this.formRegister.value.ref_id
+      )
+      .then((res) => {
+        console.log("response for the ref_id points add is: ", res);
+        this.api.dismissLoading();
+        this.onRegister();
+      })
+      .catch((res) => {
+        this.api.dismissLoading();
+        this.onRegister();
+      });
     // } else {
     //   this.onSubmit();
     // }
