@@ -4,7 +4,7 @@ Cordova Advanced HTTP
 [![MIT Licence](https://img.shields.io/badge/license-MIT-blue?style=flat)](https://opensource.org/licenses/mit-license.php)
 [![downloads/month](https://img.shields.io/npm/dm/cordova-plugin-advanced-http.svg)](https://www.npmjs.com/package/cordova-plugin-advanced-http)
 
-[![Travis Build Status](https://img.shields.io/travis/silkimen/cordova-plugin-advanced-http/master?label=Travis%20CI)](https://travis-ci.org/silkimen/cordova-plugin-advanced-http)
+[![Travis Build Status](https://img.shields.io/travis/com/silkimen/cordova-plugin-advanced-http/master?label=Travis%20CI)](https://app.travis-ci.com/silkimen/cordova-plugin-advanced-http)
 [![GitHub Build Status](https://img.shields.io/github/workflow/status/silkimen/cordova-plugin-advanced-http/Cordova%20HTTP%20Plugin%20CI/master?label=GitHub%20Actions)](https://github.com/silkimen/cordova-plugin-advanced-http/actions)
 
 
@@ -16,6 +16,7 @@ This is a fork of [Wymsee's Cordova-HTTP plugin](https://github.com/wymsee/cordo
 
  - SSL / TLS Pinning
  - CORS restrictions do not apply
+ - X.509 client certificate based authentication
  - Handling of HTTP code 401 - read more at [Issue CB-2415](https://issues.apache.org/jira/browse/CB-2415)
 
 ## Updates
@@ -32,6 +33,19 @@ phonegap plugin add cordova-plugin-advanced-http
 
 cordova plugin add cordova-plugin-advanced-http
 ```
+
+### Plugin Preferences
+
+`AndroidBlacklistSecureSocketProtocols`: define a blacklist of secure socket protocols for Android. This preference allows you to disable protocols which are considered unsafe. You need to provide a comma-separated list of protocols ([check Android SSLSocket#protocols docu for protocol names](https://developer.android.com/reference/javax/net/ssl/SSLSocket#protocols)).
+
+e.g. blacklist `SSLv3` and `TLSv1`:
+```xml
+<preference name="AndroidBlacklistSecureSocketProtocols" value="SSLv3,TLSv1" />
+```
+
+## Currently known issues
+
+- [abort](#abort)ing sent requests is not working reliably
 
 ## Usage
 
@@ -60,7 +74,7 @@ cordova.plugin.http.useBasicAuth('user', 'password');
 ```
 
 ### setHeader<a name="setHeader"></a>
-Set a header for all future requests to a specified host. Takes a hostname, a header and a value (must be a string value).
+Set a header for all future requests to a specified host. Takes a hostname, a header and a value (must be a string value or null).
 
 ```js
 cordova.plugin.http.setHeader('Hostname', 'Header', 'Value');
@@ -115,9 +129,23 @@ This defaults to `urlencoded`. You can also override the default content type he
 
 ### setRequestTimeout
 Set how long to wait for a request to respond, in seconds.
-
+For Android, this will set both [connectTimeout](https://developer.android.com/reference/java/net/URLConnection#getConnectTimeout()) and [readTimeout](https://developer.android.com/reference/java/net/URLConnection#setReadTimeout(int)).
+For iOS, this will set [timeout interval](https://developer.apple.com/documentation/foundation/nsmutableurlrequest/1414063-timeoutinterval).
+For browser platform, this will set [timeout](https://developer.mozilla.org/fr/docs/Web/API/XMLHttpRequest/timeout).
 ```js
 cordova.plugin.http.setRequestTimeout(5.0);
+```
+
+### setConnectTimeout (Android Only)
+Set connect timeout for Android
+```js
+cordova.plugin.http.setRequestTimeout(5.0);
+```
+
+### setReadTimeout (Android Only)
+Set read timeout for Android
+```js
+cordova.plugin.http.setReadTimeout(5.0);
 ```
 
 ### setFollowRedirect<a name="setFollowRedirect"></a>
@@ -186,11 +214,28 @@ cordova.plugin.http.setServerTrustMode('nocheck', function() {
 });
 ```
 
-### disableRedirect (deprecated)
-This function was deprecated in 2.0.9. Use ["setFollowRedirect"](#setFollowRedirect) instead.
+### setClientAuthMode<a name="setClientAuthMode"></a>
+Configure X.509 client certificate authentication. Takes mode and options. `mode` being one of following values:
 
-### setSSLCertMode (deprecated)
-This function was deprecated in 2.0.8. Use ["setServerTrustMode"](#setServerTrustMode) instead.
+* `none`: disable client certificate authentication
+* `systemstore` (only on Android): use client certificate installed in the Android system store; user will be presented with a list of all installed certificates
+* `buffer`: use given client certificate; you will need to provide an options object:
+  * `rawPkcs`: ArrayBuffer containing raw PKCS12 container with client certificate and private key
+  * `pkcsPassword`: password of the PKCS container
+
+```js
+  // enable client auth using PKCS12 container given in ArrayBuffer `myPkcs12ArrayBuffer`
+  cordova.plugin.http.setClientAuthMode('buffer', {
+    rawPkcs: myPkcs12ArrayBuffer,
+    pkcsPassword: 'mySecretPassword'
+  }, success, fail);
+
+  // enable client auth using certificate in system store (only on Android)
+  cordova.plugin.http.setClientAuthMode('systemstore', {}, success, fail);
+
+  // disable client auth
+  cordova.plugin.http.setClientAuthMode('none', {}, success, fail);
+```
 
 ### removeCookies
 Remove all cookies associated with a given URL.
@@ -213,9 +258,9 @@ The options object contains following keys:
 * `serializer`: data serializer to be used (only applicable on `post`, `put` or `patch` methods), defaults to global serializer value, see [setDataSerializer](#setDataSerializer) for supported values
 * `responseType`: expected response type, defaults to `text`, needs to be one of the following values:
   * `text`: data is returned as decoded string, use this for all kinds of string responses (e.g. XML, HTML, plain text, etc.)
-  * `json` data is treated as JSON and returned as parsed object
-  * `arraybuffer`: data is returned as [ArrayBuffer instance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
-  * `blob`: data is returned as [Blob instance](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
+  * `json` data is treated as JSON and returned as parsed object, returns `undefined` when response body is empty
+  * `arraybuffer`: data is returned as [ArrayBuffer instance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), returns `null` when response body is empty
+  * `blob`: data is returned as [Blob instance](https://developer.mozilla.org/en-US/docs/Web/API/Blob), returns `null` when response body is empty
 * `timeout`: timeout value for the request in seconds, defaults to global timeout value
 * `followRedirect`: enable or disable automatically following redirects
 * `headers`: headers object (key value pair), will be merged with global values
@@ -369,18 +414,72 @@ cordova.plugin.http.uploadFile("https://google.com/", {
 ```
 
 ### downloadFile<a name="downloadFile"></a>
-Downloads a file and saves it to the device.  Takes a URL, parameters, headers, and a filePath.  See [post](#post) documentation for details on what is returned on failure.  On success this function returns a cordova [FileEntry object](http://cordova.apache.org/docs/en/3.3.0/cordova_file_file.md.html#FileEntry).
+Downloads a file and saves it to the device.  Takes a URL, parameters, headers, and a filePath.  See [post](#post) documentation for details on what is returned on failure.  On success this function returns a cordova [FileEntry object](http://cordova.apache.org/docs/en/3.3.0/cordova_file_file.md.html#FileEntry) as first and the response object as second parameter.
 
 ```js
-cordova.plugin.http.downloadFile("https://google.com/", {
+cordova.plugin.http.downloadFile(
+  "https://google.com/",
+  { id: '12', message: 'test' },
+  { Authorization: 'OAuth2: token' },
+  'file:///somepicture.jpg',
+  // success callback
+  function(entry, response) {
+    // prints the filename
+    console.log(entry.name);
+
+    // prints the filePath
+    console.log(entry.fullPath);
+
+    // prints all header key/value pairs
+    Object.keys(response.headers).forEach(function (key) {
+      console.log(key, response.headers[key]);
+    });
+  },
+  // error callback
+  function(response) {
+    console.error(response.error);
+  }
+);
+```
+
+### abort<a name="abort"></a>
+Abort a HTTP request.  Takes the `requestId` which is returned by [sendRequest](#sendRequest) and its shorthand functions ([post](#post), [get](#get), [put](#put), [patch](#patch), [delete](#delete), [head](#head), [uploadFile](#uploadFile) and [downloadFile](#downloadFile)).
+
+If the request already has finished, the request will finish normally and the abort call result will be `{ aborted: false }`.
+
+If the request is still in progress, the request's `failure` callback will be invoked with response `{ status: -8 }`, and the abort call result `{ aborted: true }`.
+
+:warning: Not supported for Android < 6 (API level < 23). For Android 5.1 and below, calling `abort(reqestId)` will have no effect, i.e. the requests will finish as if the request was not cancelled.
+
+```js
+// start a request and get its requestId
+var requestId = cordova.plugin.http.downloadFile("https://google.com/", {
   id: '12',
   message: 'test'
-}, { Authorization: 'OAuth2: token' }, 'file:///somepicture.jpg', function(entry) {
+}, { Authorization: 'OAuth2: token' }, 'file:///somepicture.jpg', function(entry, response) {
   // prints the filename
   console.log(entry.name);
 
   // prints the filePath
   console.log(entry.fullPath);
+
+  // prints the status code
+  console.log(response.status);
+}, function(response) {
+  // if request was actually aborted, failure callback with status -8 will be invoked
+  if(response.status === -8){
+    console.log('download aborted');
+  } else {
+    console.error(response.error);
+  }
+});
+
+//...
+
+// abort request
+cordova.plugin.http.abort(requestId, function(result) {
+  // prints if request was aborted: true | false
+  console.log(result.aborted);
 }, function(response) {
   console.error(response.error);
 });
@@ -419,6 +518,28 @@ This plugin uses amazing cloud services to maintain quality. CI Builds and E2E t
 * [BrowserStack](https://www.browserstack.com/)
 * [Sauce Labs](https://saucelabs.com/)
 * [httpbin.org](https://httpbin.org/)
+* [go-httpbin](https://httpbingo.org/)
+
+### Local Testing
+
+First, install current package with `npm install` to fetch dev dependencies.
+
+Then, to execute Javascript tests:
+```shell
+npm run test:js
+```
+
+And, to execute E2E tests:
+- setup local Android sdk and emulators, or Xcode and simulators for iOS
+  - launch emulator or simulator
+- install [Appium](http://appium.io/) (see [Getting Started](https://github.com/appium/appium/blob/HEAD/docs/en/about-appium/getting-started.md))
+  - start `appium`
+- run
+  -  updating client and server certificates, building test app, and running e2e tests
+```shell
+npm run test:android
+npm run test:ios
+```
 
 ## Contribute & Develop
 

@@ -1,31 +1,4 @@
 {
-  "cordova-plugin-email-composer": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-email-composer"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-x-socialsharing": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-x-socialsharing"
-    },
-    "is_top_level": true,
-    "variables": {
-      "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
-      "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
-    }
-  },
-  "cordova-plugin-apprate": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-apprate"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-appminimize": {
     "source": {
       "type": "registry",
@@ -90,26 +63,10 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-advanced-http": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-advanced-http"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-statusbar": {
     "source": {
       "type": "registry",
       "id": "cordova-plugin-statusbar@2.4.3"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-crop": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-crop"
     },
     "is_top_level": true,
     "variables": {}
@@ -121,16 +78,6 @@
     },
     "is_top_level": true,
     "variables": {}
-  },
-  "cordova-plugin-telerik-imagepicker": {
-    "source": {
-      "type": "registry",
-      "id": "https://github.com/Telerik-Verified-Plugins/ImagePicker.git"
-    },
-    "is_top_level": true,
-    "variables": {
-      "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This will allow you to add product images"
-    }
   },
   "cordova-plugin-nativestorage": {
     "source": {
@@ -160,14 +107,6 @@
       "APP_ID": "572265257254087",
       "APP_NAME": "Luxe Fragrance Bar"
     }
-  },
-  "cordova-sqlite-storage": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-sqlite-storage"
-    },
-    "is_top_level": true,
-    "variables": {}
   },
   "cordova-plugin-geolocation": {
     "source": {
@@ -199,14 +138,6 @@
       "id": "cordova-plugin-add-swift-support@2.0.2"
     },
     "is_top_level": false,
-    "variables": {}
-  },
-  "cordova-plugin-android-permissions": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-android-permissions"
-    },
-    "is_top_level": true,
     "variables": {}
   },
   "cordova-plugin-androidx": {
@@ -281,18 +212,79 @@
     "is_top_level": true,
     "variables": {}
   },
-  "onesignal-cordova-plugin": {
-    "source": {
-      "type": "registry",
-      "id": "onesignal-cordova-plugin@3.0.0"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-qrscanner": {
     "source": {
       "type": "registry",
       "id": "cordova-plugin-qrscanner"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-android-permissions": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-android-permissions"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-sqlite-storage": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-sqlite-storage"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-crop": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-crop"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-advanced-http": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-advanced-http"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-apprate": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-apprate"
+    },
+    "is_top_level": true,
+    "variables": {
+      "PLAY_CORE_VERSION": "1.+"
+    }
+  },
+  "cordova-plugin-x-socialsharing": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-x-socialsharing"
+    },
+    "is_top_level": true,
+    "variables": {
+      "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+      "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+    }
+  },
+  "cordova-plugin-email-composer": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-email-composer"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-telerik-imagepicker": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-telerik-imagepicker"
     },
     "is_top_level": true,
     "variables": {}

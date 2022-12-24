@@ -1,5 +1,64 @@
 # Changelog
 
+# 3.3.1
+
+- Fixed #427: missing connection check on Android (thanks moshe5745)
+- Fixed #459: namespace collision on iOS when another plugin is also using AFNetworking (thanks zafirskthelifehacker)
+- Fixed #429: intermediate CA certs are not respected on iOS when using client certs (thanks pavrda)
+- Fixed #444: errors are not handled when invalid header values are applied on browser (thanks @MobisysGmbH)
+- Fixed #441: sensible data can be cached in cache.db on iOS (thanks dtarnawsky)
+
+# 3.3.0
+
+- Feature #451: expose response object on `downloadFile()` (thanks to @MobisysGmbH)
+
+# 3.2.2
+
+- Fixed #438: requests not working correctly on browser platform because request options are not processed correctly
+
+## 3.2.1
+
+- Fixed #425: plugin crashes on Android SDK levels < 24
+- Fixed #418: deprecated AFNetworking method causes app crash (thanks meiram-tr)
+- Fixed #404: wrong timeout implementation (thanks YouYue123)
+
+## 3.2.0
+
+- Feature #420: implement blacklist feature to disable SSL/TLS versions on Android (thanks to @MobisysGmbH)
+
+## 3.1.1
+
+- Fixed #372: malformed empty multipart request on Android
+- Fixed #399: memory leakage leads to app crashes on iOS (thanks avargaskun)
+
+## 3.1.0
+
+- Feature #272: add support for aborting requests (thanks russaa)
+
+## 3.0.1
+
+- Fixed #359: memory leakage leads to app crashes on Android
+- Fixed #355: responseType "json" not working with valid JSON response on browser (thanks millerg6711)
+
+## 3.0.0
+
+- Feature #158: support removing headers which were previously set via "setHeader"
+
+- Fixed #345: empty file names are not handled correctly (thanks ikosta)
+
+- :warning: **Breaking Change**: Dropped support for Android < 5.1
+- :warning: **Breaking Change**: Removed "disableRedirect", use "setFollowRedirect" instead
+- :warning: **Breaking Change**: Removed "setSSLCertMode", use "setServerTrustMode" instead
+
+## 2.5.1
+
+- Fixed #334: empty JSON response triggers error even though request is successful (thanks antikalk)
+- Fixed #248: clearCookies() does not work on iOS
+
+## 2.5.0
+
+- Feature #56: add support for X.509 client certificate based authentication
+
 ## 2.4.1
 
 - Fixed #296: multipart requests are not serialized on browser platform

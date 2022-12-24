@@ -5,6 +5,13 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
   var validHttpMethods = ['get', 'put', 'post', 'patch', 'head', 'delete', 'options', 'upload', 'download'];
   var validResponseTypes = ['text', 'json', 'arraybuffer', 'blob'];
 
+  var nextRequestId = (function(){
+    var currReqId = 0;
+    return function nextRequestId() {
+        return ++currReqId;
+    }
+  })();
+
   var interface = {
     b64EncodeUnicode: b64EncodeUnicode,
     checkClientAuthMode: checkClientAuthMode,
@@ -24,6 +31,7 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
     injectCookieHandler: injectCookieHandler,
     injectFileEntryHandler: injectFileEntryHandler,
     injectRawResponseHandler: injectRawResponseHandler,
+    nextRequestId: nextRequestId,
   };
 
   // expose all functions for testing purposes
@@ -187,7 +195,9 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
   }
 
   function checkForInvalidHeaderValue(value) {
-    if (jsUtil.getTypeOf(value) !== 'String') {
+    var type = jsUtil.getTypeOf(value);
+
+    if (type !== 'String' && type !== 'Null') {
       throw new Error(messages.INVALID_HEADER_VALUE);
     }
 
@@ -295,20 +305,28 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
       try {
         // json
         if (responseType === validResponseTypes[1]) {
-          response.data = JSON.parse(response.data);
+          response.data = response.data === ''
+            ? undefined
+            : JSON.parse(response.data);
         }
 
         // arraybuffer
         else if (responseType === validResponseTypes[2]) {
-          response.data = base64.toArrayBuffer(response.data);
+          response.data = response.data === ''
+            ? null
+            : base64.toArrayBuffer(response.data);
         }
 
         // blob
         else if (responseType === validResponseTypes[3]) {
-          var buffer = base64.toArrayBuffer(response.data);
-          var type = response.headers['content-type'] || '';
-          var blob = new Blob([ buffer ], { type: type });
-          response.data = blob;
+          if (response.data === '') {
+            response.data = null;
+          } else {
+            var buffer = base64.toArrayBuffer(response.data);
+            var type = response.headers['content-type'] || '';
+            var blob = new Blob([buffer], { type: type });
+            response.data = blob;
+          }
         }
 
         success(response);
@@ -325,7 +343,10 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
 
   function injectFileEntryHandler(cb) {
     return function (response) {
-      cb(createFileEntry(response.file));
+      var fileEntry = createFileEntry(response.file);
+      response.file = fileEntry;
+      response.data = fileEntry;
+      cb(fileEntry, response);
     }
   }
 
@@ -384,7 +405,7 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
     if (allowedInstanceTypes) {
       var isCorrectInstanceType = false;
 
-      allowedInstanceTypes.forEach(function(type) {
+      allowedInstanceTypes.forEach(function (type) {
         if ((global[type] && data instanceof global[type]) || (ponyfills[type] && data instanceof ponyfills[type])) {
           isCorrectInstanceType = true;
         }
@@ -440,10 +461,10 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
     if (entry.value[1] instanceof global.Blob || entry.value[1] instanceof global.File) {
       var reader = new global.FileReader();
 
-      reader.onload = function() {
+      reader.onload = function () {
         result.buffers.push(base64.fromArrayBuffer(reader.result));
         result.names.push(entry.value[0]);
-        result.fileNames.push(entry.value[1].name || 'blob');
+        result.fileNames.push(entry.value[1].name !== undefined ? entry.value[1].name : 'blob');
         result.types.push(entry.value[1].type || '');
         processFormDataIterator(iterator, textEncoder, result, onFinished);
       };
@@ -487,7 +508,9 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
       params: checkParamsObject(options.params || {}),
       responseType: checkResponseType(options.responseType || validResponseTypes[0]),
       serializer: checkSerializer(options.serializer || globals.serializer),
-      timeout: checkTimeoutValue(options.timeout || globals.timeout),
+      connectTimeout: checkTimeoutValue(options.connectTimeout || globals.connectTimeout),
+      readTimeout: checkTimeoutValue(options.readTimeout || globals.readTimeout),
+      timeout: checkTimeoutValue(options.timeout || globals.timeout)
     };
   }
 };

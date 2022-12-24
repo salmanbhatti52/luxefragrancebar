@@ -11,7 +11,7 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-advanced-http": {
-      "OKHTTP_VERSION": "3.10.0",
+      "ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1",
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-android-permissions": {
@@ -24,6 +24,7 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-apprate": {
+      "PLAY_CORE_VERSION": "1.+",
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-camera": {
@@ -40,7 +41,6 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-email-composer": {
-      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-facebook4": {
@@ -106,13 +106,9 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-x-socialsharing": {
-      "ANDROID_SUPPORT_V4_VERSION": "24.1.1+",
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
-    "onesignal-cordova-plugin": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   },

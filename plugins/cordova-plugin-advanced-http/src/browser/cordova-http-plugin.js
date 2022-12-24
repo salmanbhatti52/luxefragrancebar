@@ -3,6 +3,8 @@ var pluginId = module.id.slice(0, module.id.lastIndexOf('.'));
 var cordovaProxy = require('cordova/exec/proxy');
 var jsUtil = require(pluginId + '.js-util');
 
+var reqMap = {};
+
 function serializeJsonData(data) {
   try {
     return JSON.stringify(data);
@@ -20,7 +22,7 @@ function serializePrimitive(key, value) {
 }
 
 function serializeArray(key, values) {
-  return values.map(function(value) {
+  return values.map(function (value) {
     return encodeURIComponent(key) + '[]=' + encodeURIComponent(value);
   }).join('&');
 }
@@ -28,7 +30,7 @@ function serializeArray(key, values) {
 function serializeParams(params) {
   if (params === null) return '';
 
-  return Object.keys(params).map(function(key) {
+  return Object.keys(params).map(function (key) {
     if (jsUtil.getTypeOf(params[key]) === 'Array') {
       return serializeArray(key, params[key]);
     }
@@ -38,11 +40,11 @@ function serializeParams(params) {
 }
 
 function decodeB64(dataString) {
-  var binarString = atob(dataString);
-  var bytes = new Uint8Array(binarString.length);
+  var binaryString = atob(dataString);
+  var bytes = new Uint8Array(binaryString.length);
 
-  for (var i = 0; i < binarString.length; ++i) {
-      bytes[i] = binarString.charCodeAt(i);
+  for (var i = 0; i < binaryString.length; ++i) {
+    bytes[i] = binaryString.charCodeAt(i);
   }
 
   return bytes.buffer;
@@ -60,7 +62,7 @@ function processMultipartData(data) {
     var type = data.types[i];
 
     if (fileName) {
-      fd.append(name, new Blob([decodeB64(buffer)], {type: type}), fileName);
+      fd.append(name, new Blob([decodeB64(buffer)], { type: type }), fileName);
     } else {
       // we assume it's plain text if no filename was given
       fd.append(name, atob(buffer));
@@ -115,10 +117,17 @@ function createXhrFailureObject(xhr) {
   return obj;
 }
 
+function injectRequestIdHandler(reqId, cb) {
+  return function (response) {
+    delete reqMap[reqId];
+    cb(response);
+  }
+}
+
 function getHeaderValue(headers, headerName) {
   let result = null;
 
-  Object.keys(headers).forEach(function(key) {
+  Object.keys(headers).forEach(function (key) {
     if (key.toLowerCase() === headerName.toLowerCase()) {
       result = headers[key];
     }
@@ -134,7 +143,7 @@ function setDefaultContentType(headers, contentType) {
 }
 
 function setHeaders(xhr, headers) {
-  Object.keys(headers).forEach(function(key) {
+  Object.keys(headers).forEach(function (key) {
     if (key.toLowerCase() === 'cookie') return;
 
     xhr.setRequestHeader(key, headers[key]);
@@ -142,35 +151,45 @@ function setHeaders(xhr, headers) {
 }
 
 function sendRequest(method, withData, opts, success, failure) {
-  var data, serializer, headers, timeout, followRedirect, responseType;
+  var data, serializer, headers, readTimeout, followRedirect, responseType, reqId;
   var url = opts[0];
 
   if (withData) {
     data = opts[1];
     serializer = opts[2];
     headers = opts[3];
-    timeout = opts[4];
-    followRedirect = opts[5];
-    responseType = opts[6];
+    // connect timeout not applied
+    // connectTimeout = opts[4];
+    readTimeout = opts[5];
+    followRedirect = opts[6];
+    responseType = opts[7];
+    reqId = opts[8];
   } else {
     headers = opts[1];
-    timeout = opts[2];
-    followRedirect = opts[3];
-    responseType = opts[4];
-
+    // connect timeout not applied
+    // connectTimeout = opts[2];
+    readTimeout = opts[3];
+    followRedirect = opts[4];
+    responseType = opts[5];
+    reqId = opts[6];
   }
+
+  var onSuccess = injectRequestIdHandler(reqId, success);
+  var onFail = injectRequestIdHandler(reqId, failure);
 
   var processedData = null;
   var xhr = new XMLHttpRequest();
 
+  reqMap[reqId] = xhr;
+
   xhr.open(method, url);
 
   if (headers.Cookie && headers.Cookie.length > 0) {
-    return failure('advanced-http: custom cookies not supported on browser platform');
+    return onFail('advanced-http: custom cookies not supported on browser platform');
   }
 
   if (!followRedirect) {
-    return failure('advanced-http: disabling follow redirect not supported on browser platform');
+    return onFail('advanced-http: disabling follow redirect not supported on browser platform');
   }
 
   switch (serializer) {
@@ -179,7 +198,7 @@ function sendRequest(method, withData, opts, success, failure) {
       processedData = serializeJsonData(data);
 
       if (processedData === null) {
-        return failure('advanced-http: failed serializing data');
+        return onFail('advanced-http: failed serializing data');
       }
 
       break;
@@ -196,7 +215,7 @@ function sendRequest(method, withData, opts, success, failure) {
 
     case 'multipart':
       const contentType = getHeaderValue(headers, 'Content-Type');
-      
+
       // intentionally don't set a default content type
       // it's set by the browser together with the content disposition string
       if (contentType) {
@@ -212,16 +231,38 @@ function sendRequest(method, withData, opts, success, failure) {
       break;
   }
 
-  xhr.timeout = timeout * 1000;
-  xhr.responseType = responseType;
-  setHeaders(xhr, headers);
+  // requesting text instead of JSON because it's parsed in the response handler
+  xhr.responseType = responseType === 'json' ? 'text' : responseType;
+
+  // we can't set connect timeout and read timeout separately on browser platform
+  xhr.timeout = readTimeout * 1000;
+
+  try {
+    setHeaders(xhr, headers);
+  } catch(error) {
+    return onFail({
+      status: -1,
+      error: error,
+      url: url,
+      headers: headers
+    });
+  }
 
   xhr.onerror = function () {
-    return failure(createXhrFailureObject(xhr));
+    return onFail(createXhrFailureObject(xhr));
   };
 
-  xhr.ontimeout = function () { 
-    return failure({
+  xhr.onabort = function () {
+    return onFail({
+      status: -8,
+      error: 'Request was aborted',
+      url: url,
+      headers: {}
+    });
+  };
+
+  xhr.ontimeout = function () {
+    return onFail({
       status: -4,
       error: 'Request timed out',
       url: url,
@@ -233,13 +274,26 @@ function sendRequest(method, withData, opts, success, failure) {
     if (xhr.readyState !== xhr.DONE) return;
 
     if (xhr.status < 200 || xhr.status > 299) {
-      return failure(createXhrFailureObject(xhr));
+      return onFail(createXhrFailureObject(xhr));
     }
 
-    return success(createXhrSuccessObject(xhr));
+    return onSuccess(createXhrSuccessObject(xhr));
   };
 
   xhr.send(processedData);
+}
+
+function abort(opts, success, failure) {
+  var reqId = opts[0];
+  var result = false;
+
+  var xhr = reqMap[reqId];
+  if(xhr && xhr.readyState !== xhr.DONE){
+    xhr.abort();
+    result = true;
+  }
+
+  success({aborted: result});
 }
 
 var browserInterface = {
@@ -260,6 +314,9 @@ var browserInterface = {
   },
   patch: function (success, failure, opts) {
     return sendRequest('patch', true, opts, success, failure);
+  },
+  abort: function (success, failure, opts) {
+    return abort(opts, success, failure);
   },
   uploadFile: function (success, failure, opts) {
     return failure('advanced-http: function "uploadFile" not supported on browser platform');
