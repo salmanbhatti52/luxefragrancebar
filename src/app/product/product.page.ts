@@ -44,14 +44,14 @@ export class ProductPage {
     getReviewsPage() {
         let navigationExtras = {
             queryParams: {
-              ratingVerificationRequired: this.productDetails.rating_verification_required,
-              customerBoughtProduct: this.productDetails.customer_bought_product
+                ratingVerificationRequired: this.productDetails.rating_verification_required,
+                customerBoughtProduct: this.productDetails.customer_bought_product
             }
         };
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id, navigationExtras);
     }
     getProduct() {
-        this.api.postItem('product', {'product_id': this.id}).then(res => {
+        this.api.postItem('product', { 'product_id': this.id }).then(res => {
             this.product = res;
             this.handleProduct();
         }, err => {
@@ -59,7 +59,7 @@ export class ProductPage {
         });
     }
     ngOnInit() {
-        this.translate.get(['Oops!', 'Please Select', 'Please wait', 'Options', 'Option', 'Select', 'Item added to cart', 'Message', 'Requested quantity not available'  ]).subscribe(translations => {
+        this.translate.get(['Oops!', 'Please Select', 'Please wait', 'Options', 'Option', 'Select', 'Item added to cart', 'Message', 'Requested quantity not available']).subscribe(translations => {
             this.lan.oops = translations['Oops!'];
             this.lan.PleaseSelect = translations['Please Select'];
             this.lan.Pleasewait = translations['Please wait'];
@@ -73,44 +73,44 @@ export class ProductPage {
         this.product = this.productData.product;
         this.id = this.route.snapshot.paramMap.get('id');
         if (this.product.id) this.handleProduct();
-         else this.getProduct();
+        else this.getProduct();
     }
     handleProduct() {
 
         /* Reward Points */
-        if(this.settings.settings.switchRewardPoints && this.product.meta_data)
-        this.product.meta_data.forEach(item => {
-            if(item.key == '_wc_points_earned'){
-                this.product.showPoints = item.value;
-            }
-        });
+        if (this.settings.settings.switchRewardPoints && this.product.meta_data)
+            this.product.meta_data.forEach(item => {
+                if (item.key == '_wc_points_earned') {
+                    this.product.showPoints = item.value;
+                }
+            });
 
         /* Product Addons */
-        if(this.settings.settings.switchAddons ===  1)
-        this.getAddons();
+        if (this.settings.settings.switchAddons === 1)
+            this.getAddons();
 
-        this.usedVariationAttributes = this.product.attributes.filter(function(attribute) {
+        this.usedVariationAttributes = this.product.attributes.filter(function (attribute) {
             return attribute.variation == true
         });
-    
+
         //if ((this.product.type == 'variable') && this.product.variations.length) this.getVariationProducts();
         if ((this.product.type == 'grouped') && this.product.grouped_products.length)
-        this.getGroupedProducts();
+            this.getGroupedProducts();
         this.getRelatedProducts();
         this.getReviews();
     }
     getVariationProducts() {
-        this.api.getItem('products/' + this.product.id + '/variations', {per_page: 100}).then(res => {
+        this.api.getItem('products/' + this.product.id + '/variations', { per_page: 100 }).then(res => {
             this.variations = res;
-        }, err => {});
+        }, err => { });
     }
-    getGroupedProducts(){
+    getGroupedProducts() {
         if (this.product.grouped_products.length) {
             var filter = [];
             for (let item in this.product.grouped_products) filter['include[' + item + ']'] = this.product.grouped_products[item];
             this.api.getItem('products', filter).then(res => {
                 this.groupedProducts = res;
-            }, err => {});
+            }, err => { });
         }
     }
     getRelatedProducts() {
@@ -118,15 +118,15 @@ export class ProductPage {
         filter['product_id'] = this.product.id;
         this.api.postItem('product_details', filter).then(res => {
             this.productDetails = res;
-        }, err => {});
+        }, err => { });
     }
     getReviews() {
-        this.api.postItem('product_reviews', {'product_id': this.product.id}).then(res => {
+        this.api.postItem('product_reviews', { 'product_id': this.product.id }).then(res => {
             this.reviews = res;
             for (let item in this.reviews) {
                 this.reviews[item].avatar = md5(this.reviews[item].email);
             }
-        }, err => {});
+        }, err => { });
     }
     goToProduct(product) {
         this.productData.product = product;
@@ -135,20 +135,22 @@ export class ProductPage {
         this.navCtrl.navigateForward(path + '/' + product.id);
     }
     async addToCart() {
-        if(this.product.manage_stock && this.product.stock_quantity < this.data.cart[this.product.id]) {
+        if (this.product.manage_stock && this.product.stock_quantity < this.data.cart[this.product.id]) {
             this.presentAlert(this.lan.message, this.lan.lowQuantity);
         }
         else if (this.selectAdons() && this.setVariations2() && this.setGroupedProducts()) {
-            if(this.product.type != 'grouped') {
+            if (this.product.type != 'grouped') {
                 this.options.quantity = this.quantity;
             }
             this.options.product_id = this.product.id;
             this.disableButton = true;
-            await this.api.postItem('add_to_cart', this.options).then(res => {
+            await this.api.addcart('add_to_cart', this.options).then(res => {
+                console.log('cart item to add', res);
+
                 this.results = res;
-                if(this.results.error) {
+                if (this.results.error) {
                     this.presentToast(this.results.notice);
-                } else { 
+                } else {
                     this.cart = res;
                     this.presentToast(this.lan.addToCart);
                     this.data.updateCart(this.cart.cart);
@@ -162,14 +164,14 @@ export class ProductPage {
     }
     async presentToast(message) {
         const toast = await this.toastController.create({
-          message: message.replace(/<[^>]*>/g, ''),
-          duration: 2000,
-          position: 'top'
+            message: message.replace(/<[^>]*>/g, ''),
+            duration: 2000,
+            position: 'top'
         });
         toast.present();
     }
     setVariations() {
-        if(this.variationId){
+        if (this.variationId) {
             this.options.variation_id = this.variationId;
         }
         this.product.attributes.forEach(item => {
@@ -179,7 +181,7 @@ export class ProductPage {
         })
         for (var i = 0; i < this.product.attributes.length; i++) {
             if (this.product.attributes[i].variation && this.product.attributes[i].selected == undefined) {
-                this.presentAlert(this.lan.options, this.lan.select +' '+ this.product.attributes[i].name +' '+ this.lan.option);
+                this.presentAlert(this.lan.options, this.lan.select + ' ' + this.product.attributes[i].name + ' ' + this.lan.option);
                 return false;
             }
         }
@@ -188,23 +190,23 @@ export class ProductPage {
     setVariations2() {
         var doAdd = true;
         if (this.product.type == 'variable' && this.product.variationOptions != null) {
-          for (var i = 0; i < this.product.variationOptions.length; i++) {
-            if (this.product.variationOptions[i].selected != null) {
-              this.options['variation[attribute_' + this.product.variationOptions[i].attribute +
-                  ']'] = this.product.variationOptions[i].selected;
-            } else if (this.product.variationOptions[i].selected == null && this.product.variationOptions[i].options.length != 0) {
-              this.presentAlert(this.lan.options, this.lan.select +' '+ this.product.variationOptions[i].name);
-              doAdd = false;
-              break;
-            } else if (this.product.variationOptions[i].selected == null && this.product.variationOptions[i].options.length == 0) {
-              this.product.stock_status = 'outofstock';
-              doAdd = false;
-              break;
+            for (var i = 0; i < this.product.variationOptions.length; i++) {
+                if (this.product.variationOptions[i].selected != null) {
+                    this.options['variation[attribute_' + this.product.variationOptions[i].attribute +
+                        ']'] = this.product.variationOptions[i].selected;
+                } else if (this.product.variationOptions[i].selected == null && this.product.variationOptions[i].options.length != 0) {
+                    this.presentAlert(this.lan.options, this.lan.select + ' ' + this.product.variationOptions[i].name);
+                    doAdd = false;
+                    break;
+                } else if (this.product.variationOptions[i].selected == null && this.product.variationOptions[i].options.length == 0) {
+                    this.product.stock_status = 'outofstock';
+                    doAdd = false;
+                    break;
+                }
             }
-          }
-          if (this.product.variation_id) {
-            this.options['variation_id'] = this.product.variation_id;
-          }
+            if (this.product.variation_id) {
+                this.options['variation_id'] = this.product.variation_id;
+            }
         }
         return doAdd;
     }
@@ -220,9 +222,9 @@ export class ProductPage {
             for (var i = 0; i < this.product.availableVariations.length; i++) {
                 matchedOptions = [];
                 for (var j = 0; j < this.product.availableVariations[i].option.length; j++) {
-                  if (selectedOptions.includes(this.product.availableVariations[i].option[j].value) || this.product.availableVariations[i].option[j].value == '') {
-                    matchedOptions.push(this.product.availableVariations[i].option[j].value);
-                  }
+                    if (selectedOptions.includes(this.product.availableVariations[i].option[j].value) || this.product.availableVariations[i].option[j].value == '') {
+                        matchedOptions.push(this.product.availableVariations[i].option[j].value);
+                    }
                 }
                 if (matchedOptions.length == selectedOptions.length) {
                     this.product.variation_id = this.product.availableVariations[i].variation_id;
@@ -237,13 +239,13 @@ export class ProductPage {
                     if (!this.product.availableVariations[i].is_in_stock) {
                         this.product.stock_status = 'outofstock';
                     }
-                    
+
                     break;
                 }
-              }
-              if (matchedOptions.length != selectedOptions.length) {
+            }
+            if (matchedOptions.length != selectedOptions.length) {
                 this.product.stock_status = 'outofstock';
-              }
+            }
         }
     }
     chooseVariation(att, value) {
@@ -256,26 +258,11 @@ export class ProductPage {
             }
         })
         if (this.usedVariationAttributes.every(a => a.selected !== undefined))
-        this.variations.forEach(variation => {
-            var test = new Array(this.usedVariationAttributes.length);
-            test.fill(false);
-            this.usedVariationAttributes.forEach(attribute => {
-                if (variation.attributes.length == 0) {
-                    this.variationId = variation.id;
-                    this.product.stock_status = variation.stock_status;
-                    this.product.price = variation.price;
-                    this.product.sale_price = variation.sale_price;
-                    this.product.regular_price = variation.regular_price;
-                    this.product.manage_stock = variation.manage_stock;
-                    this.product.stock_quantity = variation.stock_quantity;
-                    //this.product.images[0] = variation.image; /* Uncomment this if you want to use variation images */
-                } else {
-                    variation.attributes.forEach((item, index) => {
-                        if (item.name == attribute.name && item.option == attribute.selected) {
-                            test[index] = true;
-                        }
-                    })
-                    if (test.every(v => v == true)) {
+            this.variations.forEach(variation => {
+                var test = new Array(this.usedVariationAttributes.length);
+                test.fill(false);
+                this.usedVariationAttributes.forEach(attribute => {
+                    if (variation.attributes.length == 0) {
                         this.variationId = variation.id;
                         this.product.stock_status = variation.stock_status;
                         this.product.price = variation.price;
@@ -283,15 +270,30 @@ export class ProductPage {
                         this.product.regular_price = variation.regular_price;
                         this.product.manage_stock = variation.manage_stock;
                         this.product.stock_quantity = variation.stock_quantity;
-                        //this.product.images[0] = variation.image;  /* Uncomment this if you want to use variation images */
-                        test.fill(false);
-                    } else if (variation.attributes.length != 1 && variation.attributes.length == this.usedVariationAttributes.length && test.some(v => v == false)) {
-                        //this.product.stock_status = 'outofstock';
-                        //this.options.variation_id = variation.id;
+                        //this.product.images[0] = variation.image; /* Uncomment this if you want to use variation images */
+                    } else {
+                        variation.attributes.forEach((item, index) => {
+                            if (item.name == attribute.name && item.option == attribute.selected) {
+                                test[index] = true;
+                            }
+                        })
+                        if (test.every(v => v == true)) {
+                            this.variationId = variation.id;
+                            this.product.stock_status = variation.stock_status;
+                            this.product.price = variation.price;
+                            this.product.sale_price = variation.sale_price;
+                            this.product.regular_price = variation.regular_price;
+                            this.product.manage_stock = variation.manage_stock;
+                            this.product.stock_quantity = variation.stock_quantity;
+                            //this.product.images[0] = variation.image;  /* Uncomment this if you want to use variation images */
+                            test.fill(false);
+                        } else if (variation.attributes.length != 1 && variation.attributes.length == this.usedVariationAttributes.length && test.some(v => v == false)) {
+                            //this.product.stock_status = 'outofstock';
+                            //this.options.variation_id = variation.id;
+                        }
                     }
-                }
+                })
             })
-        })
     }
     async presentAlert(header, message) {
         const alert = await this.alertController.create({
@@ -304,7 +306,7 @@ export class ProductPage {
     OnDestroy() {
         this.productData.product = {};
     }
-    share(){
+    share() {
         var options = {
             message: "Check this out!",
             subject: this.product.name,
@@ -312,7 +314,7 @@ export class ProductPage {
             url: this.product.permalink,
             chooserTitle: 'Choose an App'
         }
-        
+
         this.socialSharing.shareWithOptions(options);
     }
     getDetail(vendor) {
@@ -321,17 +323,17 @@ export class ProductPage {
         var pages = this.router.url.split('/');
         this.navCtrl.navigateForward('/tabs/' + pages[2] + '/vendor-products');
     }
-    buyExternalProduct(id){
+    buyExternalProduct(id) {
         var options = "location=no,hidden=yes,toolbar=no,hidespinner=yes";
         let browser = this.iab.create(this.product.external_url, '_blank', options);
         browser.show();
     }
-    setGroupedProducts(){
-        if(this.product.type == 'grouped') {
+    setGroupedProducts() {
+        if (this.product.type == 'grouped') {
             this.options['add-to-cart'] = this.product.id;
             this.groupedProducts.forEach(item => {
-                if(item.selected){
-                    this.options['quantity['+ item.id +']'] = item.selected;
+                if (item.selected) {
+                    this.options['quantity[' + item.id + ']'] = item.selected;
                 }
             })
             return true;
@@ -340,83 +342,83 @@ export class ProductPage {
     }
 
     /* PRODUCT ADDONS */
-    getAddons(){
-        if(this.product.meta_data){
-            for(let item in this.product.meta_data){
-                if(this.product.meta_data[item].key == '_product_addons' && this.product.meta_data[item].value.length){
-                    this.addonsList.push(...this.product.meta_data[item].value)           
+    getAddons() {
+        if (this.product.meta_data) {
+            for (let item in this.product.meta_data) {
+                if (this.product.meta_data[item].key == '_product_addons' && this.product.meta_data[item].value.length) {
+                    this.addonsList.push(...this.product.meta_data[item].value)
                 }
             }
         }
         this.getGlobalAddons()
     }
-    getGlobalAddons(){
+    getGlobalAddons() {
         this.api.getAddonsList('product-add-ons').then(res => {
             this.handleAddonResults(res);
         });
     }
-    handleAddonResults(results){
-        if(results && results.length)
-        results.forEach(item => {
-            this.addonsList.push(...item.fields)
-        });
+    handleAddonResults(results) {
+        if (results && results.length)
+            results.forEach(item => {
+                this.addonsList.push(...item.fields)
+            });
     }
     selectAdons() {
         this.options = {};
         let valid = this.validateform();
-        if(valid) {
+        if (valid) {
             this.addonsList.forEach((value, i) => {
                 value.selectedName = value.name.toLowerCase();
                 value.selectedName = value.selectedName.split(' ').join('-');
                 value.selectedName = value.selectedName.split('.').join('');
-                value.selectedName = value.selectedName.replace(':','');
-                    value.options.forEach((option, j) => {
-                        option.selectedLabel = option.label.toLowerCase();
-                        option.selectedLabel = option.selectedLabel.split(' ').join('-');
-                        option.selectedLabel = option.selectedLabel.split('.').join('');
-                        option.selectedLabel = option.selectedLabel.replace(':','');
-                        if (value.selected instanceof Array) {
-                            if (value.selected.includes(option.label)) {
-                                this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']' ] = option.selectedLabel;
-                            }
+                value.selectedName = value.selectedName.replace(':', '');
+                value.options.forEach((option, j) => {
+                    option.selectedLabel = option.label.toLowerCase();
+                    option.selectedLabel = option.selectedLabel.split(' ').join('-');
+                    option.selectedLabel = option.selectedLabel.split('.').join('');
+                    option.selectedLabel = option.selectedLabel.replace(':', '');
+                    if (value.selected instanceof Array) {
+                        if (value.selected.includes(option.label)) {
+                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']'] = option.selectedLabel;
                         }
-                        else if (option.label == value.selected && value.type == 'select') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i ] = option.selectedLabel + '-' + (j + 1);
-                        }
-                        else if (option.label == value.selected && value.type == 'radiobutton') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']' ] = option.selectedLabel;
-                        }
-                        else if (value.type === 'custom_textarea' && option.input && option.input !== '') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + option.selectedLabel + ']' ] = option.input;
-                        }
-                    });
-                if(value.type == 'custom_text'){
+                    }
+                    else if (option.label == value.selected && value.type == 'select') {
+                        this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i] = option.selectedLabel + '-' + (j + 1);
+                    }
+                    else if (option.label == value.selected && value.type == 'radiobutton') {
+                        this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']'] = option.selectedLabel;
+                    }
+                    else if (value.type === 'custom_textarea' && option.input && option.input !== '') {
+                        this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + option.selectedLabel + ']'] = option.input;
+                    }
+                });
+                if (value.type == 'custom_text') {
                     let label = value.name;
                     label = label.toLowerCase();
                     label = label.split(' ').join('-');
                     label = label.split('.').join('');
-                    label = label.replace(':','');
-                    this.options['addon-' + this.product.id + '-' + label + '-' + i ] = value.input;
-                }    
+                    label = label.replace(':', '');
+                    this.options['addon-' + this.product.id + '-' + label + '-' + i] = value.input;
+                }
             });
         }
         return valid;
     }
-    validateform(){
-        if(this.addonsList){
-             for(let addon in this.addonsList){
-                for(let item in this.addonsList[addon].fields){
-                    if(this.addonsList[addon].fields[item].required == 1 && this.addonsList[addon].fields[item].selected == ''){
-                        this.presentAlert(this.lan.oops, this.lan.PleaseSelect +' '+ this.addonsList[addon].fields[item].name);
+    validateform() {
+        if (this.addonsList) {
+            for (let addon in this.addonsList) {
+                for (let item in this.addonsList[addon].fields) {
+                    if (this.addonsList[addon].fields[item].required == 1 && this.addonsList[addon].fields[item].selected == '') {
+                        this.presentAlert(this.lan.oops, this.lan.PleaseSelect + ' ' + this.addonsList[addon].fields[item].name);
                         return false;
                     }
                 }
-                if(this.addonsList[addon].type == 'custom_text'){
-                    if(this.addonsList[addon].required == 1 && (!this.addonsList[addon].input || this.addonsList[addon].input == '')){
-                        this.presentAlert(this.lan.oops, this.lan.PleaseSelect +' '+ this.addonsList[addon].name);
+                if (this.addonsList[addon].type == 'custom_text') {
+                    if (this.addonsList[addon].required == 1 && (!this.addonsList[addon].input || this.addonsList[addon].input == '')) {
+                        this.presentAlert(this.lan.oops, this.lan.PleaseSelect + ' ' + this.addonsList[addon].name);
                         return false;
                     }
-                }  
+                }
             }
             return true;
         }

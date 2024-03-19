@@ -49,7 +49,7 @@ export class CartPage {
     public route: ActivatedRoute,
     public productData: Product,
     public routerOutlet: IonRouterOutlet
-  ) {}
+  ) { }
   ngOnInit() {
     this.translate
       .get(["Requested quantity not available"])
@@ -61,9 +61,9 @@ export class CartPage {
     this.getCart();
   }
   async getCart() {
-    await this.api.postItem("cart").then(
+    await this.api.getcart("cart").then(
       (res) => {
-        console.log("testingggg----cats redeems");
+        console.log("testingggg----cats redeems", res);
         this.cart = res;
         this.data.updateCart(this.cart.cart_contents);
       },
@@ -85,7 +85,7 @@ export class CartPage {
     this.navCtrl.navigateForward(this.router.url + "/product/" + id);
   }
   async deleteItem(itemKey, qty) {
-    await this.api.postItem("remove_cart_item&item_key=" + itemKey).then(
+    await this.api.delcartitem("remove_cart_item&item_key=" + itemKey).then(
       (res) => {
         this.cart = res;
         this.data.updateCart(this.cart.cart_contents);
@@ -155,7 +155,8 @@ export class CartPage {
       params.quantity = this.data.cartItem[item.key].quantity;
       params.update_cart = "Update Cart";
       params._wpnonce = this.cart.cart_nonce;
-      await this.api.postItem("update-cart-item-qty", params).then(
+      // postItem //
+      await this.api.addandremoveitem("update-cart-item-qty", params).then(
         (res) => {
           this.cart = res;
           this.data.updateCart(this.cart.cart_contents);
@@ -187,7 +188,8 @@ export class CartPage {
     params.update_cart = "Update Cart";
     params._wpnonce = this.cart.cart_nonce;
 
-    await this.api.postItem("update-cart-item-qty", params).then(
+    // postItem //
+    await this.api.addandremoveitem("update-cart-item-qty", params).then(
       (res) => {
         this.cart = res;
         this.data.updateCart(this.cart.cart_contents);

@@ -250,6 +250,79 @@ export class ApiService {
       });
     }
   }
+  addcart(endPoint, data = {}) {
+
+    const url = this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-' + endPoint;
+
+    for (var key in data) { if ('object' === typeof (data[key])) delete data[key] }
+    data['lang'] = this.config.lang;
+    this.ionicHttp.setHeader(this.options, 'Content-Type', 'application/json; charset=UTF-8');
+    this.ionicHttp.setDataSerializer('urlencoded');
+    return new Promise((resolve, reject) => {
+      this.ionicHttp.post(url, data, {})
+        .then(data => {
+          resolve(JSON.parse(data.data));
+        })
+        .catch(error => {
+          reject(JSON.parse(error.error));
+        });
+    });
+  }
+  getcart(endPoint, data = {}) {
+
+    const url = this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-' + endPoint;
+
+    for (var key in data) { if ('object' === typeof (data[key])) delete data[key] }
+    data['lang'] = this.config.lang;
+    this.ionicHttp.setHeader(this.options, 'Content-Type', 'application/json; charset=UTF-8');
+    this.ionicHttp.setDataSerializer('urlencoded');
+    return new Promise((resolve, reject) => {
+      this.ionicHttp.post(url, data, {})
+        .then(data => {
+          resolve(JSON.parse(data.data));
+        })
+        .catch(error => {
+          reject(JSON.parse(error.error));
+        });
+    });
+
+  }
+  delcartitem(endPoint, data = {}) {
+
+    const url = this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-' + endPoint;
+
+    for (var key in data) { if ('object' === typeof (data[key])) delete data[key] }
+    data['lang'] = this.config.lang;
+    this.ionicHttp.setHeader(this.options, 'Content-Type', 'application/json; charset=UTF-8');
+    this.ionicHttp.setDataSerializer('urlencoded');
+    return new Promise((resolve, reject) => {
+      this.ionicHttp.post(url, data, {})
+        .then(data => {
+          resolve(JSON.parse(data.data));
+        })
+        .catch(error => {
+          reject(JSON.parse(error.error));
+        });
+    });
+  }
+
+  addandremoveitem(endPoint, data = {}) {
+    const url = this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-' + endPoint;
+
+    for (var key in data) { if ('object' === typeof (data[key])) delete data[key] }
+    data['lang'] = this.config.lang;
+    this.ionicHttp.setHeader(this.options, 'Content-Type', 'application/json; charset=UTF-8');
+    this.ionicHttp.setDataSerializer('urlencoded');
+    return new Promise((resolve, reject) => {
+      this.ionicHttp.post(url, data, {})
+        .then(data => {
+          resolve(JSON.parse(data.data));
+        })
+        .catch(error => {
+          reject(JSON.parse(error.error));
+        });
+    });
+  }
   postAnwser(postData) {
     let headers = {
       "Content-Type": "application/json",
