@@ -387,6 +387,7 @@ export class LoginPage implements OnInit {
       (res) => {
         this.status = res;
         if (this.status.errors) {
+          this.api.dismissLoading()
           this.errorsRegister = this.status.errors;
           this.disableSubmit = false;
           for (var key in this.errors) {
