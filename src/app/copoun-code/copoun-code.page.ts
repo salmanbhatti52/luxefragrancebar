@@ -34,6 +34,7 @@ export class CopounCodePage implements OnInit {
         this.loading = false;
       })
       .catch((error) => {
+        this.loading = false;
         console.log("error for the pdf files is: ", error);
       });
   }

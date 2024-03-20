@@ -24,7 +24,7 @@ export class MemberPointsPage implements OnInit {
   base64_ref: any;
   constructor(
     private nav: NavController,
-    private router:Router,
+    private router: Router,
     public api: ApiService,
     private http: HttpClient,
     private settings: Settings,
@@ -33,7 +33,7 @@ export class MemberPointsPage implements OnInit {
     this.userName = localStorage.getItem("user_name");
   }
 
-  async ngOnInit() {}
+  async ngOnInit() { }
 
   async ionViewWillEnter() {
     const loading = await this.loadingCtrl.create({
@@ -41,31 +41,32 @@ export class MemberPointsPage implements OnInit {
       message: "Please wait...",
     });
     loading.present();
+
     this.base64_ref = btoa(this.settings.customer.id);
     this.array = [];
     this.validArray = [];
-  
+
     this.http
       .get(
         "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_valid_points&ref_id=" +
-          btoa(this.settings.customer.id)
+        btoa(this.settings.customer.id)
       )
       .subscribe(async (validPoints: any) => {
         this.http
           .get(
             "https://luxefragrancebar.com/wp-admin/admin-ajax.php?action=eg_all_points&ref_id=" +
-              btoa(this.settings.customer.id)
+            btoa(this.settings.customer.id)
           )
           .subscribe(async (res: any) => {
             console.log("valid points are: ", validPoints.valid_points);
             console.log("The all points: ", res.all_points);
-            if(res.all_points==""){
+            if (res.all_points == "") {
               this.allPoints = 0;
             }
-            else{
+            else {
               this.allPoints = res.all_points;
             }
-           
+
             this.points = res;
             this.loading = false;
             //this.isLoaded = true;
@@ -98,30 +99,37 @@ export class MemberPointsPage implements OnInit {
               this.availblePoints
             );
           });
+      }, err => {
+        console.log(err);
+
+        this.loading = false;
+        //this.isLoaded = true;
+
+        loading.dismiss();
       });
   }
 
   enterPassword() {
-    console.log("asdsadasdasdasdasdasd",this.array.length);
+    console.log("asdsadasdasdasdasdasd", this.array.length);
     this.nav.navigateForward([
       "enter-password",
       { points: this.array.length, allPoints: this.allPoints },
     ]);
-   
+
   }
   redeem() {
-    console.log("asdsadasdasdasdasdasd",this.array.length);
+    console.log("asdsadasdasdasdasdasd", this.array.length);
     this.nav.navigateForward([
       "redeem",
-      { points: this.array.length, allPoints: this.allPoints,type:'remove' },
+      { points: this.array.length, allPoints: this.allPoints, type: 'remove' },
     ]);
-   
+
   }
-  delete(){
-    console.log("asdsadasdasdasdasdasd",this.array.length);
+  delete() {
+    console.log("asdsadasdasdasdasdasd", this.array.length);
     this.nav.navigateForward([
       "redeem",
-      { points: this.array.length, allPoints: this.allPoints,type:'remove' },
+      { points: this.array.length, allPoints: this.allPoints, type: 'remove' },
     ]);
   }
 }
