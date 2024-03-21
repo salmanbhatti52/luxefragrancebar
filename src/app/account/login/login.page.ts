@@ -12,11 +12,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { Settings } from "./../../data/settings";
 import { FormBuilder, Validators } from "@angular/forms";
-import { OneSignal } from "@ionic-native/onesignal/ngx";
+// import { OneSignal } from "@ionic-native/onesignal/ngx";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook/ngx";
 import { ForgottenPage } from "./../forgotten/forgotten.page";
-
+import OneSignal from 'onesignal-cordova-plugin';
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",
@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
     public modalCtrl: ModalController,
     public navParams: NavParams,
     public platform: Platform,
-    private oneSignal: OneSignal,
+    // private oneSignal: OneSignal,
     public api: ApiService,
     public settings: Settings,
     public loadingController: LoadingController,
@@ -90,6 +90,26 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.path = this.navParams.data.path;
 
+  }
+  onesignalpush() {
+    OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
+
+    OneSignal.setNotificationOpenedHandler((jsonData) => {
+      console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
+    });
+
+    OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
+      console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
+    });
+
+    OneSignal.getDeviceState((resp: any) => {
+      const osUser: any = resp;
+
+      console.log('userID==========>', osUser);
+      // console.log('userID==========>', this.uid);
+      // localStorage.setItem("oneSignaldeviceID", this.uid);
+
+    });
   }
   sociallogin() {
     this.api
@@ -142,13 +162,17 @@ export class LoginPage implements OnInit {
           localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova")) {
-            this.oneSignal.getIds().then((data: any) => {
-              this.form.onesignal_user_id = data.userId;
-              this.form.onesignal_push_token = data.pushToken;
-              this.api
-                .postItem("update_user_notification", this.form)
-                .then((res) => { });
-            });
+            console.log('in cordova condition');
+
+            this.onesignalpush()
+            // this.oneSignal.getIds().then((data: any) => {
+            //   alert('onesignalid' + data)
+            //   this.form.onesignal_user_id = data.userId;
+            //   this.form.onesignal_push_token = data.pushToken;
+            //   this.api
+            //     .postItem("update_user_notification", this.form)
+            //     .then((res) => { });
+            // });
           }
           if (
             this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -211,10 +235,10 @@ export class LoginPage implements OnInit {
                 localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
-                  this.oneSignal.getIds().then((data: any) => {
-                    this.form.onesignal_user_id = data.userId;
-                    this.form.onesignal_push_token = data.pushToken;
-                  });
+                  // this.oneSignal.getIds().then((data: any) => {
+                  //   this.form.onesignal_user_id = data.userId;
+                  //   this.form.onesignal_push_token = data.pushToken;
+                  // });
                   this.api
                     .postItem("update_user_notification", this.form)
                     .then((res) => { });
@@ -271,10 +295,10 @@ export class LoginPage implements OnInit {
                 localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
-                  this.oneSignal.getIds().then((data: any) => {
-                    this.form.onesignal_user_id = data.userId;
-                    this.form.onesignal_push_token = data.pushToken;
-                  });
+                  // this.oneSignal.getIds().then((data: any) => {
+                  //   this.form.onesignal_user_id = data.userId;
+                  //   this.form.onesignal_push_token = data.pushToken;
+                  // });
                   this.api
                     .postItem("update_user_notification", this.form)
                     .then((res) => { });
@@ -344,10 +368,10 @@ export class LoginPage implements OnInit {
               localStorage.setItem("customerID", this.status.ID);
               this.settings.customer.id = this.status.ID;
               if (this.platform.is("cordova")) {
-                this.oneSignal.getIds().then((data: any) => {
-                  this.form.onesignal_user_id = data.userId;
-                  this.form.onesignal_push_token = data.pushToken;
-                });
+                // this.oneSignal.getIds().then((data: any) => {
+                //   this.form.onesignal_user_id = data.userId;
+                //   this.form.onesignal_push_token = data.pushToken;
+                // });
                 this.api
                   .postItem("update_user_notification", this.form)
                   .then((res) => { });
@@ -400,14 +424,14 @@ export class LoginPage implements OnInit {
           localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova"))
-            this.oneSignal.getIds().then((data: any) => {
-              this.pushForm.onesignal_user_id = data.userId;
-              this.pushForm.onesignal_push_token = data.pushToken;
-              this.api
-                .postItem("update_user_notification", this.pushForm)
-                .then((res) => { });
-            });
-          this.close(true);
+            // this.oneSignal.getIds().then((data: any) => {
+            //   this.pushForm.onesignal_user_id = data.userId;
+            //   this.pushForm.onesignal_push_token = data.pushToken;
+            //   this.api
+            //     .postItem("update_user_notification", this.pushForm)
+            //     .then((res) => { });
+            // });
+            this.close(true);
           this.disableSubmit = false;
           this.api.dismissLoading();
         } else this.disableSubmit = false;

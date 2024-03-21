@@ -16,7 +16,7 @@ import { ViewChild } from "@angular/core";
 import { Config } from "./config";
 import { Subscription } from "rxjs";
 import { Settings } from "./data/settings";
-
+import OneSignal from 'onesignal-cordova-plugin';
 declare var wkWebView: any;
 
 @Component({
@@ -39,8 +39,8 @@ export class AppComponent {
     private appMinimize: AppMinimize,
     public settings: Settings
   ) {
-    console.log("on app component testing ",localStorage.getItem('customerID'));
-    if(localStorage.getItem('customerID')){
+    console.log("on app component testing ", localStorage.getItem('customerID'));
+    if (localStorage.getItem('customerID')) {
       this.settings.customer.id = localStorage.getItem('customerID');
     }
     this.initializeApp();
@@ -98,8 +98,12 @@ export class AppComponent {
                 //this.generic.showAlert("Exit", "Do you want to exit the app?", this.onYesHandler, this.onNoHandler, "backPress");
               }
             });*/
+
+
     });
+
   }
+
 
   async presentAlertConfirm() {
     console.log("working");

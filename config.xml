@@ -28,9 +28,13 @@
     <preference name="StatusBarStyle" value="blackopaque" />
     <preference name="Orientation" value="portrait" />
     <preference name="WKWebViewOnly" value="true" />
+    <preference name="AndroidXEnabled" value="true" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:usesCleartextTraffic="true" />
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/activity" xmlns:android="http://schemas.android.com/apk/res/android">
+            <activity android:exported="true" />
         </edit-config>
         <hook src="hooks/copy_android_notification_icons.js" type="after_prepare" />
         <allow-intent href="market:*" />

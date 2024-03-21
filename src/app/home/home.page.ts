@@ -19,16 +19,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomePage {
     slideOpts = {
-      slidesPerView: 1.5,
-      //spaceBetween: 10,
-      freeMode: true,
-      coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true,
-      }
+        slidesPerView: 1.5,
+        //spaceBetween: 10,
+        freeMode: true,
+        coverflowEffect: {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+        }
     };
     tempProducts: any = [];
     filter: any = {};
@@ -43,7 +43,7 @@ export class HomePage {
     }
     ngOnInit() {
         this.platform.ready().then(() => {
-            this.nativeStorage.getItem('/settings').then((settings : any) => {
+            this.nativeStorage.getItem('/settings').then((settings: any) => {
                 this.config.lang = settings.lang;
                 this.translateService.setDefaultLang(this.config.lang);
                 document.documentElement.setAttribute('dir', settings.dir);
@@ -58,8 +58,8 @@ export class HomePage {
                 this.settings.dimensions = this.data.blocks.dimensions;
                 this.settings.currency = this.data.blocks.settings.currency;
 
-                if(this.data.blocks.languages)
-                this.settings.languages = Object.keys(this.data.blocks.languages).map(i => this.data.blocks.languages[i]);
+                if (this.data.blocks.languages)
+                    this.settings.languages = Object.keys(this.data.blocks.languages).map(i => this.data.blocks.languages[i]);
                 this.settings.currencies = this.data.blocks.currencies;
                 this.settings.calc(this.platform.width());
                 if (this.settings.colWidthLatest == 4) this.filter.per_page = 15;
@@ -68,10 +68,10 @@ export class HomePage {
             }, error => console.error(error));
 
             this.nativeStorage.getItem('/settings').then(data => {
-                if(data.lang){
+                if (data.lang) {
                     this.config.lang = data.lang;
                     this.translateService.setDefaultLang(data.lang);
-                    if(data.lang == 'ar'){
+                    if (data.lang == 'ar') {
                         document.documentElement.setAttribute('dir', 'rtl');
                     }
                 }
@@ -92,19 +92,19 @@ export class HomePage {
         this.api.postItem('keys').then(res => {
             this.data.blocks = res;
             console.log(this.data.blocks);
-            if(this.data.blocks && this.data.blocks.user)
-            this.settings.user = this.data.blocks.user.data;
+            if (this.data.blocks && this.data.blocks.user)
+                this.settings.user = this.data.blocks.user.data;
             //this.settings.theme = this.data.blocks.theme;
             this.settings.pages = this.data.blocks.pages;
-            if(this.data.blocks.user)
-            this.settings.reward = this.data.blocks.user.data.points_vlaue;
-            if(this.data.blocks.languages)
-            this.settings.languages = Object.keys(this.data.blocks.languages).map(i => this.data.blocks.languages[i]);
+            if (this.data.blocks.user)
+                this.settings.reward = this.data.blocks.user.data.points_vlaue;
+            if (this.data.blocks.languages)
+                this.settings.languages = Object.keys(this.data.blocks.languages).map(i => this.data.blocks.languages[i]);
             this.settings.currencies = this.data.blocks.currencies;
             this.settings.settings = this.data.blocks.settings;
             this.settings.dimensions = this.data.blocks.dimensions;
             this.settings.currency = this.data.blocks.settings.currency;
-            if(this.data.blocks.categories){
+            if (this.data.blocks.categories) {
                 this.data.categories = this.data.blocks.categories.filter(item => item.name != 'Uncategorized');
                 this.data.mainCategories = this.data.categories.filter(item => item.parent == 0);
             }
@@ -115,10 +115,10 @@ export class HomePage {
             this.processOnsignal();
             if (this.data.blocks.user) {
                 this.settings.customer.id = this.data.blocks.user.ID;
-                if(this.data.blocks.user.allcaps.wc_product_vendors_admin_vendor || this.data.blocks.user.allcaps.dc_vendor || this.data.blocks.user.allcaps.seller || this.data.blocks.user.allcaps.wcfm_vendor){
+                if (this.data.blocks.user.allcaps.wc_product_vendors_admin_vendor || this.data.blocks.user.allcaps.dc_vendor || this.data.blocks.user.allcaps.seller || this.data.blocks.user.allcaps.wcfm_vendor) {
                     this.settings.vendor = true;
                 }
-                if(this.data.blocks.user.allcaps.administrator) {
+                if (this.data.blocks.user.allcaps.administrator) {
                     this.settings.administrator = true;
                 }
             }
@@ -154,20 +154,20 @@ export class HomePage {
             }
 
             this.nativeStorage.setItem('blocks', {
-                    blocks: this.data.blocks,
-                    categories: this.data.categories
-                }).then(
-            () => console.log('Stored item!'), error => console.error('Error storing item', error));
-                
+                blocks: this.data.blocks,
+                categories: this.data.categories
+            }).then(
+                () => console.log('Stored item!'), error => console.error('Error storing item', error));
+
             /* Product Addons */
-            if(this.data.blocks.settings.switchAddons){
+            if (this.data.blocks.settings.switchAddons) {
                 this.api.getAddonsList('product-add-ons').then(res => {
                     this.settings.addons = res;
                 });
             }
         }, err => {
             console.log(err);
-        }); 
+        });
     }
     goto(item) {
         if (item.description == 'category') this.navCtrl.navigateForward('/tabs/home/products/' + item.url);
@@ -197,23 +197,23 @@ export class HomePage {
         });
     }
     processOnsignal() {
-        this.oneSignal.startInit(this.data.blocks.settings.onesignal_app_id, this.data.blocks.settings.google_project_id);
-        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-        this.oneSignal.handleNotificationReceived().subscribe(() => {
-            //do something when notification is received
-        });
-        this.oneSignal.handleNotificationOpened().subscribe(result => {
-            if (result.notification.payload.additionalData.category) {
-                this.navCtrl.navigateForward('/tabs/home/products/' + result.notification.payload.additionalData.category);
-            } else if (result.notification.payload.additionalData.product) {
-                this.navCtrl.navigateForward('/tabs/home/product/' + result.notification.payload.additionalData.product);
-            } else if (result.notification.payload.additionalData.post) {
-                this.navCtrl.navigateForward('/tabs/home/post/' + result.notification.payload.additionalData.post);
-            } else if (result.notification.payload.additionalData.order) {
-                this.navCtrl.navigateForward('/tabs/account/orders/order/' + result.notification.payload.additionalData.order);
-            }
-        });
-        this.oneSignal.endInit();
+        // this.oneSignal.startInit(this.data.blocks.settings.onesignal_app_id, this.data.blocks.settings.google_project_id);
+        // this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+        // this.oneSignal.handleNotificationReceived().subscribe(() => {
+        //     //do something when notification is received
+        // });
+        // this.oneSignal.handleNotificationOpened().subscribe(result => {
+        //     if (result.notification.payload.additionalData.category) {
+        //         this.navCtrl.navigateForward('/tabs/home/products/' + result.notification.payload.additionalData.category);
+        //     } else if (result.notification.payload.additionalData.product) {
+        //         this.navCtrl.navigateForward('/tabs/home/product/' + result.notification.payload.additionalData.product);
+        //     } else if (result.notification.payload.additionalData.post) {
+        //         this.navCtrl.navigateForward('/tabs/home/post/' + result.notification.payload.additionalData.post);
+        //     } else if (result.notification.payload.additionalData.order) {
+        //         this.navCtrl.navigateForward('/tabs/account/orders/order/' + result.notification.payload.additionalData.order);
+        //     }
+        // });
+        // this.oneSignal.endInit();
     }
     doRefresh(event) {
         this.filter.page = 1;

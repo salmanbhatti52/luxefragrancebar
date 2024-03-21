@@ -112,6 +112,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "onesignal-cordova-plugin": "^3.2.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
@@ -170,7 +171,8 @@
       "cordova-plugin-email-composer": {},
       "cordova-plugin-telerik-imagepicker": {
         "ANDROID_SUPPORT_V7_VERSION": "27.+"
-      }
+      },
+      "onesignal-cordova-plugin": {}
     },
     "platforms": [
       "ios",

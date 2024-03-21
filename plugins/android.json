@@ -110,6 +110,9 @@
     },
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "onesignal-cordova-plugin": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   },
   "dependent_plugins": {
