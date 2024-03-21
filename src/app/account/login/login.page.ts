@@ -106,6 +106,14 @@ export class LoginPage implements OnInit {
       const osUser: any = resp;
 
       console.log('userID==========>', osUser);
+      this.form.onesignal_user_id = osUser.userId;
+      this.form.onesignal_push_token = osUser.pushToken;
+      this.api
+        .postItem("update_user_notification", this.form)
+        .then((res) => {
+          console.log('update_user_notification', res);
+
+        });
       // console.log('userID==========>', this.uid);
       // localStorage.setItem("oneSignaldeviceID", this.uid);
 
@@ -235,13 +243,14 @@ export class LoginPage implements OnInit {
                 localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
+                  this.onesignalpush()
                   // this.oneSignal.getIds().then((data: any) => {
                   //   this.form.onesignal_user_id = data.userId;
                   //   this.form.onesignal_push_token = data.pushToken;
                   // });
-                  this.api
-                    .postItem("update_user_notification", this.form)
-                    .then((res) => { });
+                  // this.api
+                  //   .postItem("update_user_notification", this.form)
+                  //   .then((res) => { });
                 }
                 if (
                   this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -295,13 +304,14 @@ export class LoginPage implements OnInit {
                 localStorage.setItem("customerID", this.status.ID);
                 this.settings.customer.id = this.status.ID;
                 if (this.platform.is("cordova")) {
+                  this.onesignalpush()
                   // this.oneSignal.getIds().then((data: any) => {
                   //   this.form.onesignal_user_id = data.userId;
                   //   this.form.onesignal_push_token = data.pushToken;
                   // });
-                  this.api
-                    .postItem("update_user_notification", this.form)
-                    .then((res) => { });
+                  // this.api
+                  //   .postItem("update_user_notification", this.form)
+                  //   .then((res) => { });
                 }
                 if (
                   this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -368,13 +378,14 @@ export class LoginPage implements OnInit {
               localStorage.setItem("customerID", this.status.ID);
               this.settings.customer.id = this.status.ID;
               if (this.platform.is("cordova")) {
+                this.onesignalpush()
                 // this.oneSignal.getIds().then((data: any) => {
                 //   this.form.onesignal_user_id = data.userId;
                 //   this.form.onesignal_push_token = data.pushToken;
                 // });
-                this.api
-                  .postItem("update_user_notification", this.form)
-                  .then((res) => { });
+                // this.api
+                //   .postItem("update_user_notification", this.form)
+                //   .then((res) => { });
               }
               if (
                 this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -424,14 +435,15 @@ export class LoginPage implements OnInit {
           localStorage.setItem("customerID", this.status.ID);
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova"))
-            // this.oneSignal.getIds().then((data: any) => {
-            //   this.pushForm.onesignal_user_id = data.userId;
-            //   this.pushForm.onesignal_push_token = data.pushToken;
-            //   this.api
-            //     .postItem("update_user_notification", this.pushForm)
-            //     .then((res) => { });
-            // });
-            this.close(true);
+            this.onesignalpush()
+          // this.oneSignal.getIds().then((data: any) => {
+          //   this.pushForm.onesignal_user_id = data.userId;
+          //   this.pushForm.onesignal_push_token = data.pushToken;
+          //   this.api
+          //     .postItem("update_user_notification", this.pushForm)
+          //     .then((res) => { });
+          // });
+          this.close(true);
           this.disableSubmit = false;
           this.api.dismissLoading();
         } else this.disableSubmit = false;

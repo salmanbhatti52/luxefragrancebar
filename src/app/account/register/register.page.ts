@@ -4,8 +4,8 @@ import { ApiService } from "../../api.service";
 import { Data } from "../../data";
 import { Settings } from "./../../data/settings";
 import { FormBuilder, FormArray, Validators } from "@angular/forms";
-import { OneSignal } from "@ionic-native/onesignal/ngx";
-
+// import { OneSignal } from "@ionic-native/onesignal/ngx";
+import OneSignal from 'onesignal-cordova-plugin';
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -22,7 +22,7 @@ export class RegisterPage implements OnInit {
   phoneVerificationError: any;
   constructor(
     public platform: Platform,
-    private oneSignal: OneSignal,
+    // private oneSignal: OneSignal,
     public api: ApiService,
     public data: Data,
     public loadingController: LoadingController,
@@ -39,7 +39,7 @@ export class RegisterPage implements OnInit {
       ref_id: [""],
     });
   }
-  ngOnInit() {}
+  ngOnInit() { }
   async onSubmit() {
     this.disableSubmit = true;
     await this.api.postItem("create-user", this.form.value).then(
@@ -56,13 +56,14 @@ export class RegisterPage implements OnInit {
         } else if (this.status.data != undefined) {
           this.settings.customer.id = this.status.ID;
           if (this.platform.is("cordova"))
-            this.oneSignal.getIds().then((data: any) => {
-              this.pushForm.onesignal_user_id = data.userId;
-              this.pushForm.onesignal_push_token = data.pushToken;
-              this.api
-                .postItem("update_user_notification", this.pushForm)
-                .then((res) => {});
-            });
+            this.onesignalpush()
+          // this.oneSignal.getIds().then((data: any) => {
+          //   this.pushForm.onesignal_user_id = data.userId;
+          //   this.pushForm.onesignal_push_token = data.pushToken;
+          //   this.api
+          //     .postItem("update_user_notification", this.pushForm)
+          //     .then((res) => {});
+          // });
           this.navCtrl.navigateBack("/tabs/account");
           this.disableSubmit = false;
         } else this.disableSubmit = false;
@@ -88,6 +89,7 @@ export class RegisterPage implements OnInit {
       }
     );
   }
+
   handlePhoneLogin(info) {
     if (info.phoneNumber) {
       this.api
@@ -102,13 +104,14 @@ export class RegisterPage implements OnInit {
             } else if (this.status.data) {
               this.settings.customer.id = this.status.ID;
               if (this.platform.is("cordova")) {
-                this.oneSignal.getIds().then((data: any) => {
-                  this.form.onesignal_user_id = data.userId;
-                  this.form.onesignal_push_token = data.pushToken;
-                });
-                this.api
-                  .postItem("update_user_notification", this.form)
-                  .then((res) => {});
+                this.onesignalpush()
+                // this.oneSignal.getIds().then((data: any) => {
+                //   this.form.onesignal_user_id = data.userId;
+                //   this.form.onesignal_push_token = data.pushToken;
+                // });
+                // this.api
+                //   .postItem("update_user_notification", this.form)
+                //   .then((res) => {});
               }
               if (
                 this.status.allcaps.wc_product_vendors_admin_vendor ||
@@ -143,7 +146,7 @@ export class RegisterPage implements OnInit {
       this.api
         .getPosts(
           "wp-admin/admin-ajax.php?action=eg_add_points&ref_id=" +
-            this.form.value.ref_id
+          this.form.value.ref_id
         )
         .then((res) => {
           console.log("response for the ref_id points add is: ", res);
@@ -155,5 +158,33 @@ export class RegisterPage implements OnInit {
     } else {
       this.onSubmit();
     }
+  }
+  onesignalpush() {
+    OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
+
+    OneSignal.setNotificationOpenedHandler((jsonData) => {
+      console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
+    });
+
+    OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
+      console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
+    });
+
+    OneSignal.getDeviceState((resp: any) => {
+      const osUser: any = resp;
+
+      console.log('userID==========>', osUser);
+      this.form.onesignal_user_id = osUser.userId;
+      this.form.onesignal_push_token = osUser.pushToken;
+      this.api
+        .postItem("update_user_notification", this.form)
+        .then((res) => {
+          console.log('update_user_notification', res);
+
+        });
+      // console.log('userID==========>', this.uid);
+      // localStorage.setItem("oneSignaldeviceID", this.uid);
+
+    });
   }
 }
