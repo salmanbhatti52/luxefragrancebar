@@ -140,6 +140,7 @@ export class CheckoutPage implements OnInit {
         else {
             await this.api.ajaxCall('/checkout?wc-ajax=checkout', this.checkoutData.form).then(res => {
                 this.results = res;
+                console.log('cehck out result=====', this.results);
                 this.handleOrder();
             }, err => {
                 this.disableButton = false;
@@ -148,6 +149,7 @@ export class CheckoutPage implements OnInit {
         }
     }
     handleOrder() {
+
         if (this.results.result == 'success') {
             if (this.checkoutData.form.payment_method == 'wallet' || this.checkoutData.form.payment_method == 'paypalpro' || this.checkoutData.form.payment_method == 'stripe' || this.checkoutData.form.payment_method == 'bacs' || this.checkoutData.form.payment_method == 'cheque' || this.checkoutData.form.payment_method == 'cod' || this.checkoutData.form.payment_method == 'authnet') {
                 this.orderSummary(this.results.redirect);
@@ -169,6 +171,7 @@ export class CheckoutPage implements OnInit {
         else if (this.results.result == 'failure') {
             this.disableButton = false;
             this.errorMessage = this.results.messages;
+            // alert(this.errorMessage + 'under handleorder');
         }
     }
     handleEFTSECURE() {

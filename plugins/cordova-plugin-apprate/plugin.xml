@@ -19,7 +19,7 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0" id="cordova-plugin-apprate" version="1.7.2">
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0" id="cordova-plugin-apprate" version="1.4.0">
     <name>AppRate</name>
     <description>This plugin provides "Rate This App" functionality to your Cordova/Phonegap application</description>
     <author email="hello@pushandplay.ru" href="http://pushandplay.ru">pushandplay</author>
@@ -34,11 +34,12 @@ under the License.
     </engines>
 
     <dependency id="cordova-plugin-dialogs"/>
+    <dependency id="cordova-plugin-globalization"/>
+    <dependency id="cordova-plugin-inappbrowser"/>
     <dependency id="cordova-plugin-nativestorage"/>
 
     <js-module src="www/AppRate.js" name="AppRate">
         <clobbers target="AppRate"/>
-        <clobbers target="window.AppRate"/>
     </js-module>
 
     <js-module src="www/locales.js" name="locales">
@@ -50,8 +51,6 @@ under the License.
     </js-module>
 
     <platform name="android">
-        <preference name="PLAY_CORE_VERSION" default="1.+"/>
-        <framework src="com.google.android.play:core:$PLAY_CORE_VERSION" />
         <source-file src="src/android/AppRate.java" target-dir="src/org/pushandplay/cordova/apprate"/>
 
         <config-file target="res/xml/config.xml" parent="/*">

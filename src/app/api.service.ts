@@ -10,7 +10,7 @@ import { catchError, tap, map } from "rxjs/operators";
 import { Config } from "./config";
 import { HTTP } from "@ionic-native/http/ngx";
 import { Headers } from "@angular/http";
-import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, Platform, ToastController } from "@ionic/angular";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" }),
@@ -37,7 +37,8 @@ export class ApiService {
     private config: Config,
     private ionicHttp: HTTP,
     public loadingController: LoadingController,
-    public alertcontroller: AlertController
+    public alertcontroller: AlertController,
+    public toastController: ToastController
 
   ) {
     this.options.withCredentials = true;
@@ -633,4 +634,14 @@ export class ApiService {
     });
     await alert.present();
   }
+
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message.replace(/<[^>]*>/g, ''),
+      duration: 2000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
 }

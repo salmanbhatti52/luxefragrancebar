@@ -8,6 +8,7 @@ import {
 import { Settings } from "./../data/settings";
 import { ApiService } from "./../api.service";
 import { AppRate } from "@ionic-native/app-rate/ngx";
+
 import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { EmailComposer } from "@ionic-native/email-composer/ngx";
 import { Config } from "./../config";
@@ -64,8 +65,18 @@ export class AccountPage {
           "ms-windows-store://review/?ProductId=" +
           this.settings.settings.rate_app_windows_id,
       };
-      this.appRate.promptForRating(false);
+      this.appRate.promptForRating(true);
+
     }
+
+
+    // let url;
+    // if (this.platform.is("ios")) {
+    //   url = `https://apps.apple.com/app/id${this.settings.settings.rate_app_ios_id}`;
+    // } else if (this.platform.is("android")) {
+    //   url = `https://play.google.com/store/apps/details?id=${this.settings.settings.rate_app_android_id}`;
+    // }
+    // window.open(url, '_system');
   }
   shareApp() {
     if (this.platform.is("cordova")) {
@@ -75,7 +86,7 @@ export class AccountPage {
       else url = this.settings.settings.share_app_ios_link;
       var options = {
         message: this.settings.customer.id
-          ? `You're in! Download The LUXE LIFE app from the \nApple App store https://apps.apple.com/pk/app/the-luxe-life/id1467552821 \nand From the Google PlayStore https://play.google.com/store/apps/details?id=uk.co.luxefragrancebar.www.luxelife \nand use code "` +
+          ? `You're in! Download The LUXE LIFE app from the \nApple App store https://apps.apple.com/pk/app/the-luxe-life/id1467552821 \nand From the Google PlayStore https://play.google.com/store/apps/details?id=uk.co.luxefragrancebar.app \nand use code "` +
           btoa(this.settings.customer.id.toString()) +
           `" for your free membership.`
           : "",

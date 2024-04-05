@@ -26,10 +26,10 @@ export class ForgottenPage implements OnInit {
             email: ['', '']
         });
     }
-    ngOnInit() {}
+    ngOnInit() { }
     close() {
         this.modalCtrl.dismiss({
-          'loggedIn': false,
+            'loggedIn': false,
         });
     }
     async forgotten() {
@@ -45,10 +45,15 @@ export class ForgottenPage implements OnInit {
     }
     async resetPassword() {
         this.disableSubmit = true;
-        await this.api.postItem('reset-user-password', this.form.value).then(res => {
+        await this.api.postItem('reset-user-password', this.form.value).then((res: any) => {
             this.status = res;
-            console.log("data after forgotten",res);
-            this.login();
+            console.log("data after forgotten", res);
+            if (res.status == false) {
+                this.api.presentToast(res.message)
+            } else {
+                this.login();
+            }
+
             this.disableSubmit = false;
         }, err => {
             this.status = err;
@@ -57,14 +62,14 @@ export class ForgottenPage implements OnInit {
     }
     async login() {
         const modal = await this.modalCtrl.create({
-          component: LoginPage,
-          componentProps: {
-            path: "tabs/account",
-          },
-          swipeToClose: true,
-          //presentingElement: this.routerOutlet.nativeEl,
+            component: LoginPage,
+            componentProps: {
+                path: "tabs/account",
+            },
+            swipeToClose: true,
+            //presentingElement: this.routerOutlet.nativeEl,
         });
         modal.present();
         const { data } = await modal.onWillDismiss();
-      }
+    }
 }

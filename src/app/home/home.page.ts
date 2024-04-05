@@ -76,17 +76,30 @@ export class HomePage {
                     }
                 }
             }, error => console.error(error));
-            this.getBlocks();
+
         });
     }
-    getCart() {
-        this.api.postItem('cart').then(res => {
-            this.cart = res;
-            this.data.updateCart(this.cart.cart_contents);
-            this.data.cartNonce = this.cart.cart_nonce;
-        }, err => {
-            console.log(err);
-        });
+    ionViewWillEnter() {
+        this.getBlocks();
+    }
+    async getCart() {
+        // this.api.postItem('cart').then(res => {
+        //     this.cart = res;
+        //     this.data.updateCart(this.cart.cart_contents);
+        //     this.data.cartNonce = this.cart.cart_nonce;
+        // }, err => {
+        //     console.log(err);
+        // });
+        await this.api.getcart("cart").then(
+            (res) => {
+                console.log("testingggg----cats redeems", res);
+                this.cart = res;
+                this.data.updateCart(this.cart.cart_contents);
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
     }
     getBlocks() {
         this.api.postItem('keys').then(res => {

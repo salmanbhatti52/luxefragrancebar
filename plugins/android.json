@@ -23,10 +23,6 @@
     "cordova-plugin-appminimize": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-apprate": {
-      "PLAY_CORE_VERSION": "1.+",
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
     "cordova-plugin-camera": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
@@ -113,16 +109,22 @@
     },
     "onesignal-cordova-plugin": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "cordova-plugin-apprate": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-add-swift-support": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "es6-promise-plugin": {
+    "cordova-plugin-globalization": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   }

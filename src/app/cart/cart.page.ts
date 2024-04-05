@@ -203,9 +203,13 @@ export class CartPage {
   redeem() {
     // wc_points_rewards_apply_discount_amount:
     // wc_points_rewards_apply_discount: Apply Discount
-    this.api.postItem("ajax_maybe_apply_discount").then((res) => {
-      console.log(res);
+    this.api.postItem("ajax_maybe_apply_discount").then((res: any) => {
+      console.log(JSON.stringify(res));
+      this.toastshow(res.message)
       this.getCart();
+    }, err => {
+      console.log(JSON.stringify(err));
+
     });
   }
 
@@ -262,6 +266,14 @@ export class CartPage {
       buttons: ["OK"],
     });
     await alert.present();
+  }
+  async toastshow(message) {
+    const toast = await this.toastController.create({
+      message: message.replace(/<[^>]*>/g, ''),
+      duration: 2000,
+      position: 'top'
+    });
+    toast.present();
   }
   async presentToast(message) {
     const toast = await this.toastController.create({

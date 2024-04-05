@@ -41,12 +41,6 @@
     }];
 }
 
-- (void)isNativePromptAvailable:(CDVInvokedUrlCommand *)command {
-    BOOL isNativePromptAvailable = [SKStoreReviewController class];
-    CDVPluginResult * pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isNativePromptAvailable];
-    [self.commandDelegate sendPluginResult : pluginResult callbackId : command.callbackId];
-}
-
 - (void)launchiOSReview:(CDVInvokedUrlCommand *)command {
     BOOL shouldUseNativePrompt = [command.arguments[1] boolValue];
 
@@ -74,15 +68,11 @@
             if (error) {
                 NSLog(@"Error %@ with User Info %@.", error, [error userInfo]);
             } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                });
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                [self.viewController presentViewController:storeProductViewController animated:YES completion:nil];
             }
         }];
-        [self.viewController presentViewController:storeProductViewController animated:YES completion:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        });
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     }];
 }
 

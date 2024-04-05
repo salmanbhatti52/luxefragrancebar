@@ -31,8 +31,12 @@ export class Config {
   lang: any = "en";
   constructor() {
     this.url = "https://luxefragrancebar.com/";
-    this.consumerKey = "ck_55013e175f0ccaf3b017eb030df82aa729e5064d";
-    this.consumerSecret = "cs_50c756ba8b7597fcfa74a2886ff909613c4c91b4";
+    // this.consumerKey = "ck_55013e175f0ccaf3b017eb030df82aa729e5064d";
+    // this.consumerSecret = "cs_50c756ba8b7597fcfa74a2886ff909613c4c91b4";
+
+    // new one
+    this.consumerKey = "ck_9cbaa59a58bdffbf6ec9509acc6cf23fc589f286";
+    this.consumerSecret = "cs_ceb4b719b63a3092f9d1e399c4a7639b26662a4";
 
     this.options.withCredentials = true;
     this.options.headers = {};
