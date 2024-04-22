@@ -208,7 +208,9 @@ export class CartPage {
       this.toastshow(res.message)
       this.getCart();
     }, err => {
-      console.log(JSON.stringify(err));
+      console.log('ssssssssssssssss', err);
+
+      this.presentToast(err.text);
 
     });
   }
