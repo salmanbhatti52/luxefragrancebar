@@ -2,6 +2,7 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+// #cc9f14 gold color
 :root {
   /** primary **/
   --ion-color-primary: #E342E6;
@@ -90,7 +91,8 @@
    */
 
   body {
-    --ion-color-primary: #E342E6;
+    // #E342E6
+    --ion-color-primary:  #4169E1 ;
     --ion-color-primary-rgb: 66,140,255;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255,255,255;
@@ -117,8 +119,8 @@
     --ion-color-success-contrast-rgb: 0,0,0;
     --ion-color-success-shade: #29c467;
     --ion-color-success-tint: #44e283;
-
-    --ion-color-warning: #ffd534;
+    // #ffd534
+    --ion-color-warning: #a78f37 ;
     --ion-color-warning-rgb: 255,213,52;
     --ion-color-warning-contrast: #000000;
     --ion-color-warning-contrast-rgb: 0,0,0;

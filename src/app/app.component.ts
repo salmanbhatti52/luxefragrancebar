@@ -16,7 +16,7 @@ import { ViewChild } from "@angular/core";
 import { Config } from "./config";
 import { Subscription } from "rxjs";
 import { Settings } from "./data/settings";
-import OneSignal from 'onesignal-cordova-plugin';
+// import OneSignal from 'onesignal-cordova-plugin';
 declare var wkWebView: any;
 
 @Component({

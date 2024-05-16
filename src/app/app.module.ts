@@ -5,7 +5,7 @@ import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { OneSignal } from "@ionic-native/onesignal/ngx";
+// import { OneSignal } from "@ionic-native/onesignal/ngx";
 import { NativeStorage } from "@ionic-native/native-storage/ngx";
 //import { ScrollingModule } from '@angular/cdk/scrolling/ngx';
 //import { DragDropModule } from '@angular/cdk/drag-drop/ngx';
@@ -55,6 +55,7 @@ import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { File } from "@ionic-native/file/ngx";
 
 import { QRScanner, QRScannerStatus } from "@ionic-native/qr-scanner/ngx";
+import { AllfilesdetailsPage } from "./allfilesdetails/allfilesdetails.page";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -65,11 +66,13 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     FilterPage,
     OrderSummaryPage,
+    AllfilesdetailsPage
     //HomePage
   ],
   entryComponents: [
     FilterPage,
     OrderSummaryPage,
+    AllfilesdetailsPage
     //HomePage
   ],
   imports: [
@@ -97,7 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
     //Braintree,
     GooglePlus,
     Facebook,
-    OneSignal,
+    // OneSignal,
     NativeStorage,
     InAppBrowser,
     FormBuilder,

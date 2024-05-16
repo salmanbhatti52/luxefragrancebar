@@ -29,6 +29,7 @@ export class ApiService {
   questionAnswerList: any = [];
   pointsLength: any;
   allPoints: any;
+  allfiles: any = [];
   options: any = {};
   loading: HTMLIonLoadingElement;
   constructor(

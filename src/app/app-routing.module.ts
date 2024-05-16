@@ -72,6 +72,14 @@ const routes: Routes = [
     path: 'deleteaccount',
     loadChildren: () => import('./myPages/deleteaccount/deleteaccount.module').then( m => m.DeleteaccountPageModule)
   },
+  {
+    path: 'allfiles',
+    loadChildren: () => import('./allfiles/allfiles.module').then( m => m.AllfilesPageModule)
+  },
+  {
+    path: 'allfilesdetails',
+    loadChildren: () => import('./allfilesdetails/allfilesdetails.module').then( m => m.AllfilesdetailsPageModule)
+  },
 
   //{ path: 'edit-address', loadChildren: './account/edit-address/edit-address.module#EditAddressPageModule' },
   //{ path: 'map', loadChildren: './account/map/map.module#MapPageModule' },

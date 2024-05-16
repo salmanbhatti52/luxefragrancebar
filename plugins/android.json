@@ -10,10 +10,6 @@
     "cordova-clipboard": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-advanced-http": {
-      "ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1",
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
     "cordova-plugin-android-permissions": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
@@ -21,6 +17,9 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-appminimize": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "cordova-plugin-apprate": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-camera": {
@@ -34,9 +33,6 @@
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-document-viewer": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
-    "cordova-plugin-email-composer": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-plugin-facebook4": {
@@ -69,9 +65,6 @@
     "cordova-plugin-ionic-keyboard": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
     "cordova-plugin-nativegeocoder": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
@@ -91,26 +84,27 @@
     "cordova-plugin-statusbar": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-telerik-imagepicker": {
-      "ANDROID_SUPPORT_V7_VERSION": "27.+",
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
-    "cordova-plugin-wkwebview-engine": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
-    "cordova-plugin-x-socialsharing": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
     "cordova-sqlite-storage": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "onesignal-cordova-plugin": {
+    "cordova-plugin-email-composer": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-apprate": {
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "cordova-plugin-advanced-http": {
+      "ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1",
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "cordova-plugin-telerik-imagepicker": {
+      "ANDROID_SUPPORT_V7_VERSION": "27.+",
+      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
+    },
+    "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   },
@@ -118,13 +112,10 @@
     "cordova-plugin-add-swift-support": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "es6-promise-plugin": {
-      "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
-    },
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     },
-    "cordova-plugin-globalization": {
+    "es6-promise-plugin": {
       "PACKAGE_NAME": "uk.co.luxefragrancebar.app"
     }
   }

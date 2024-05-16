@@ -11,9 +11,9 @@ declare var wkWebView: any;
     styleUrls: ['./map.page.scss']
 })
 export class MapPage implements AfterViewInit {
-    @ViewChild('mapCanvas', {static: true}) mapElement: ElementRef;
+    @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
     mapData: any = [];
-    constructor(public api: ApiService, public platform: Platform, public settings: Settings) {}
+    constructor(public api: ApiService, public platform: Platform, public settings: Settings) { }
     async ngAfterViewInit() {
         await this.api.postItem('locations').then(res => {
             this.processData(res);
@@ -56,7 +56,7 @@ export class MapPage implements AfterViewInit {
     }
 }
 
-function getGoogleMaps(apiKey: string): Promise < any > {
+function getGoogleMaps(apiKey: string): Promise<any> {
     const win = window as any;
     const googleModule = win.google;
     if (googleModule && googleModule.maps) {

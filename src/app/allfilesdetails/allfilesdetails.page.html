@@ -1,0 +1,58 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-uppercase ion-text-center">dsff</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="share()">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>File Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div> -->
+  <!-- <div class="download ion-margin ion-padding ion-activatable" style="position: relative; overflow: hidden"
+    (click)="downloadOpenPdf()">
+    <img src="../../../assets/download.svg" style="width: 24px" alt="" />
+    &nbsp;&nbsp;Download File
+  </div>
+
+  <div class="ion-margin desc">
+    <div class="heading ion-padding">Description</div>
+    <div class="description ion-padding">
+      <a href="{{filedetails.file_src}}">{{filedetails.description}}</a>
+    </div>
+  </div> -->
+  <ion-card>
+    <!-- <ion-card-header>
+      <ion-card-title>{{ data.title }}</ion-card-title>
+    </ion-card-header> -->
+    <ion-card-content>
+      <!-- Display video or image based on the file type -->
+      <video *ngIf="getFileType(data.file_src) === 'video'" controls="false" [src]="data.file_src" width="100%">
+        Your browser does not support the video tag.
+      </video>
+      <!-- <div *ngIf="getFileType(data.file_src) === 'video'" class="video-container">
+        <video [src]="data.file_src" width="100%" (click)="$event.preventDefault()">
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+      </div> -->
+
+      <img *ngIf="getFileType(data.file_src) === 'image'" [src]="data.file_src" alt="File Image" style="width: 100%;">
+      <p>{{ data.title }}</p>
+      <p>{{ data.description }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -17,14 +17,14 @@ export class EditAddressPage implements OnInit {
     shippingStates: any;
     status: any;
     disableButton: boolean = false;
-    constructor(public api: ApiService, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {}
+    constructor(public api: ApiService, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) { }
     ngOnInit() {
         this.getCountries();
     }
     async getCountries() {
         await this.api.postItem('countries').then(res => {
             this.countries = res;
-            if(this.countries && this.countries.length == 1) {
+            if (this.countries && this.countries.length == 1) {
                 this.address['billing_country'] = this.countries[0].value;
                 this.address['shipping_country'] = this.countries[0].value;
                 this.billingStates = this.countries.find(item => item.value == this.address['billing_country']);
@@ -50,7 +50,7 @@ export class EditAddressPage implements OnInit {
         this.disableButton = true;
         await this.api.postItem('update-address', this.address).then(res => {
             this.status = res;
-           // this.navCtrl.pop();
+            // this.navCtrl.pop();
             this.disableButton = false;
         }, err => {
             this.disableButton = false;

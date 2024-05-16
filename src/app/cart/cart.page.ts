@@ -61,7 +61,7 @@ export class CartPage {
     this.getCart();
   }
   async getCart() {
-    await this.api.getcart("cart").then(
+    await this.api.postItem("cart").then(
       (res) => {
         console.log("testingggg----cats redeems", res);
         this.cart = res;
@@ -85,7 +85,7 @@ export class CartPage {
     this.navCtrl.navigateForward(this.router.url + "/product/" + id);
   }
   async deleteItem(itemKey, qty) {
-    await this.api.delcartitem("remove_cart_item&item_key=" + itemKey).then(
+    await this.api.postItem("remove_cart_item&item_key=" + itemKey).then(
       (res) => {
         this.cart = res;
         this.data.updateCart(this.cart.cart_contents);
@@ -156,7 +156,7 @@ export class CartPage {
       params.update_cart = "Update Cart";
       params._wpnonce = this.cart.cart_nonce;
       // postItem //
-      await this.api.addandremoveitem("update-cart-item-qty", params).then(
+      await this.api.postItem("update-cart-item-qty", params).then(
         (res) => {
           this.cart = res;
           this.data.updateCart(this.cart.cart_contents);

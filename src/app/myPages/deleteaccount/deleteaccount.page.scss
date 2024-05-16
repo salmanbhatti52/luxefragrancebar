@@ -58,7 +58,8 @@ p {
     --placeholder-opacity:#fff;
   }
   .btn {
-    --background: #6f6464 0% 0% no-repeat padding-box;
+    // 6f6464
+    --background: #4169E1 0% 0% no-repeat padding-box;
     font-size: 14pt;
     box-shadow: 0px 4px 10px #0000001f;
     border-radius: 10px;
@@ -68,7 +69,7 @@ p {
     margin-top: 10%;
   }
   .input{
-    border-bottom: 2px solid #e342e6;
+    border-bottom: 2px solid #4169E1;
     --padding-top: 5px !important;
     --padding-end: 0px !important;
     --padding-bottom: 8px !important;

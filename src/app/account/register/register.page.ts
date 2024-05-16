@@ -5,7 +5,7 @@ import { Data } from "../../data";
 import { Settings } from "./../../data/settings";
 import { FormBuilder, FormArray, Validators } from "@angular/forms";
 // import { OneSignal } from "@ionic-native/onesignal/ngx";
-import OneSignal from 'onesignal-cordova-plugin';
+// import OneSignal from 'onesignal-cordova-plugin';
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -160,31 +160,31 @@ export class RegisterPage implements OnInit {
     }
   }
   onesignalpush() {
-    OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
+    // OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
 
-    OneSignal.setNotificationOpenedHandler((jsonData) => {
-      console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
-    });
+    // OneSignal.setNotificationOpenedHandler((jsonData) => {
+    //   console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
+    // });
 
-    OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
-      console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
-    });
+    // OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
+    //   console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
+    // });
 
-    OneSignal.getDeviceState((resp: any) => {
-      const osUser: any = resp;
+    // OneSignal.getDeviceState((resp: any) => {
+    //   const osUser: any = resp;
 
-      console.log('userID==========>', osUser);
-      this.form.onesignal_user_id = osUser.userId;
-      this.form.onesignal_push_token = osUser.pushToken;
-      this.api
-        .postItem("update_user_notification", this.form)
-        .then((res) => {
-          console.log('update_user_notification', res);
+    //   console.log('userID==========>', osUser);
+    //   this.form.onesignal_user_id = osUser.userId;
+    //   this.form.onesignal_push_token = osUser.pushToken;
+    //   this.api
+    //     .postItem("update_user_notification", this.form)
+    //     .then((res) => {
+    //       console.log('update_user_notification', res);
 
-        });
-      // console.log('userID==========>', this.uid);
-      // localStorage.setItem("oneSignaldeviceID", this.uid);
+    //     });
+    //   // console.log('userID==========>', this.uid);
+    //   // localStorage.setItem("oneSignaldeviceID", this.uid);
 
-    });
+    // });
   }
 }

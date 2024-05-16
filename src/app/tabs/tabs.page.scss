@@ -13,22 +13,23 @@ ion-label{
 ion-tabs {
 .svg {
     fill: grey;
-    stroke: #1F51FF !important;
+    stroke: #4169E1 !important;
     stroke-width: 15;
     width: 20px;
 }
 }
+// #1F51FF
 
 ion-tabs .tab-selected {
 .svg {
-    fill: #1F51FF;
+    fill: #4169E1;
     stroke: transparent !important;
     stroke-width: 0;
     width: 20px;
 }
 
 ion-label {
-    color: #1F51FF;
+    color: #4169E1;
 }
 }
 

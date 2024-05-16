@@ -146,6 +146,9 @@ export class AccountPage {
   getposts() {
     this.navCtrl.navigateForward("pdffiles");
   }
+  allfiles() {
+    this.navCtrl.navigateForward("allfiles");
+  }
   getCoupon() {
     this.navCtrl.navigateForward("copoun-code");
   }

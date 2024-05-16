@@ -5,7 +5,7 @@ import { ApiService } from '../api.service';
 import { Data } from '../data';
 import { Settings } from '../data/settings';
 import { Product } from '../data/product';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+// import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Platform } from '@ionic/angular';
@@ -36,7 +36,9 @@ export class HomePage {
     cart: any;
     screenWidth: any = 300;
     //slideOpts = { effect: 'flip', autoplay: true, parallax: true, loop: true, lazy: true };
-    constructor(private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage) {
+    constructor(private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute,
+        // private oneSignal: OneSignal, 
+        private nativeStorage: NativeStorage) {
         this.filter.page = 1;
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();

@@ -8,7 +8,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 // import { OneSignal } from '@ionic-native/onesignal/ngx';
 //import { CardIO } from '@ionic-native/card-io/ngx';
 //import { Braintree, ApplePayOptions, PaymentUIOptions, PaymentUIResult } from '@ionic-native/braintree/ngx';
-import OneSignal from 'onesignal-cordova-plugin';
+// import OneSignal from 'onesignal-cordova-plugin';
 declare var Stripe;
 @Component({
     selector: 'app-checkout',
@@ -91,23 +91,23 @@ export class CheckoutPage implements OnInit {
         //
     }
     onesignalpush() {
-        OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
+        // OneSignal.setAppId('51ba3722-840c-4b3a-97f9-4938a044197b');
 
-        OneSignal.setNotificationOpenedHandler((jsonData) => {
-            console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
-        });
+        // OneSignal.setNotificationOpenedHandler((jsonData) => {
+        //     console.log('setNotificationOpenedHandler: ' + JSON.stringify(jsonData));
+        // });
 
-        OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
-            console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
-        });
+        // OneSignal.promptForPushNotificationsWithUserResponse((accepted) => {
+        //     console.log('promptForPushNotificationsWithUserResponse: ' + accepted);
+        // });
 
-        OneSignal.getDeviceState((resp: any) => {
-            const osUser: any = resp;
+        // OneSignal.getDeviceState((resp: any) => {
+        //     const osUser: any = resp;
 
-            console.log('userID==========>', osUser);
-            this.checkoutData.form.onesignal_user_id = osUser.userId;
+        //     console.log('userID==========>', osUser);
+        //     this.checkoutData.form.onesignal_user_id = osUser.userId;
 
-        });
+        // });
     }
     async placeOrder() {
         this.disableButton = true;

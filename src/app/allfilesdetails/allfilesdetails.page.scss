@@ -1,0 +1,43 @@
+.download {
+    border: 1px solid #a78f37;
+    font-size: 20px;
+    color: #a78f37;
+    display: flex;
+    align-items: center;
+}
+.download a{
+    color: #a78f37;
+    text-decoration: none;
+}
+
+.desc {
+    border: 1px solid #a78f37;
+    
+
+    .heading {
+        font-size: 20px;
+        color: #a78f37;
+        border-bottom: 1px solid #a78f37;
+    }
+
+    .description {
+        font-size: 14;
+        color: white;
+    }
+}
+
+// .video-container {
+//     position: relative;
+//     width: 100%; /* Adjust the width as needed */
+//   }
+  
+//   .video-overlay {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background: transparent; /* you can adjust the background as needed */
+//     cursor: not-allowed; /* visually indicate that interaction is disabled */
+//   }
+  

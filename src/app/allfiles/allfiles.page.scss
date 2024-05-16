@@ -1,0 +1,47 @@
+.files {
+    margin: auto;
+    padding: 5% auto;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+
+    .file {
+        flex-shrink: 0;
+        text-align: center;
+        margin: 10px;
+        width: calc(50% - 20px);
+        border: 1px solid #a78f37;
+        background: rgba($color: #fff, $alpha: 0.1);
+        padding: 20px 10px;
+
+        .img {
+            img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        .label {
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+    }
+}
+.files .file .img video {
+    max-width: 100%;
+    height: auto;
+}
+
+.video-container {
+    position: relative;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+

@@ -24,6 +24,31 @@ ion-popover [popover]:not(:popover-open):not(dialog[open]) {
 * {
     //font-family: 'Montserrat-Regular' !important;
 }
+
+/* src/global.scss */
+.my-custom-popup {
+    --width: 90%;
+    --height: 60%;
+    --border-radius: 10px;
+  }
+.my-custom-popup ion-modal {
+    --width: 80%;
+    --height: 80%;
+    --border-radius: 20px;  /* Optional: if you want rounded corners */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* This is necessary to ensure that the modal content itself is also centered */
+  .modal-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
 .totals-amount{
     float: right;
 }

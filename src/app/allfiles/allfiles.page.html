@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot='start'>
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="">Images/Videos Files Downloads</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content class="ion-padding">
+  <div class="spinner" *ngIf="loading"><ion-spinner> </ion-spinner></div>
+  <div class="files">
+
+    <div class="file" *ngFor='let some of api.allfiles; let i = index;' (click)='viewdetails(i)'>
+      <div class="img">
+        <img *ngIf="getFileType(some.file_src) === 'image'" src="../../../assets/image/photo.png" alt="">
+        <img *ngIf="getFileType(some.file_src) === 'video'" src="../../../assets/image/youtube.png" alt="">
+      </div>
+      <div class="label">
+        {{some.title}}
+      </div>
+    </div>
+
+  </div>
+
+</ion-content> -->
+
+<ion-content>
+  <div *ngFor="let category of api.allfiles; let i = index">
+    <ion-item (click)="toggleSection(i)">
+      <ion-icon name="folder" slot="start"></ion-icon>
+      <ion-label>{{ category.title }}</ion-label>
+      <ion-icon name="arrow-forward" slot="end" *ngIf="expandedIndex !== i"></ion-icon>
+      <ion-icon name="arrow-down" slot="end" *ngIf="expandedIndex === i"></ion-icon>
+    </ion-item>
+
+    <!-- Expanded content for each category -->
+    <div *ngIf="expandedIndex === i" class="files">
+      <div class="file" *ngFor="let file of category.filesdata; let j = index;" (click)='viewdetails(file)'>
+
+        <div class="img">
+          <img *ngIf="getFileType(file.file_src) === 'image'" [src]="file.file_src" alt="File Image">
+          <!-- <img *ngIf="getFileType(file.file_src) === 'video'" [src]="getVideoThumbnail(file.file_src)" alt="File Video"> -->
+          <video *ngIf="getFileType(file.file_src) === 'video'" [src]="file.file_src" controls width="320">
+          </video>
+          <!-- Video block with overlay -->
+          <!-- <div *ngIf="getFileType(file.file_src) === 'video'" class="video-container"
+            (click)="$event.stopPropagation()">
+            <video [src]="file.file_src" controls width="320">
+
+            </video>
+            <div class="video-overlay" (click)="viewdetails(file)"></div>
+          </div> -->
+          <div class="label">
+            {{file.title}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
